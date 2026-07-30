@@ -1,0 +1,56 @@
+# Data & model artifacts (keep folder placeholders)
+tmp/*
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/processed_fullstop/
+checkpoints/*
+!checkpoints/.gitkeep
+outputs/
+onnx/
+wandb/
+runs/
+*.bz2
+*.xml
+!**/*.gitkeep
+*.bin
+*.pt
+*.safetensors
+*.ckpt
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+hf_token*
+token*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.envrc
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Logs / caches
+*.log
+.cache/
+.huggingface/
+huggingface/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

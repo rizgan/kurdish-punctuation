@@ -1,0 +1,60 @@
+project:
+  seed: 42
+  output_dir: outputs/punctuation-xlm-r-base
+
+model:
+  name: FacebookAI/xlm-roberta-base
+  max_length: 256
+  num_labels: 5
+
+dataset:
+  map_ellipsis_to_period: true
+  min_words_per_sample: 3
+  max_words_per_sample: 180
+  train_ratio: 0.90
+  validation_ratio: 0.05
+  test_ratio: 0.05
+
+training:
+  precision: bf16
+  epochs: 3
+  train_batch_size: 16
+  eval_batch_size: 32
+  gradient_accumulation_steps: 2
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.06
+  max_grad_norm: 1.0
+  logging_steps: 50
+  evaluation_strategy: epoch
+  save_strategy: epoch
+  save_total_limit: 3
+  load_best_model_at_end: true
+  metric_for_best_model: punctuation_macro_f1
+  greater_is_better: true
+  dataloader_num_workers: 4
+  gradient_checkpointing: false
+
+loss:
+  use_class_weights: true
+  class_weight_method: inverse_sqrt
+  max_class_weight: 8.0
+
+early_stopping:
+  enabled: true
+  patience: 2
+
+inference:
+  max_length: 256
+  overlap_words: 32
+  batch_size: 16
+  minimum_confidence:
+    COMMA: 0.55
+    PERIOD: 0.55
+    QUESTION: 0.60
+    EXCLAMATION: 0.70
+
+paths:
+  raw_wikipedia_jsonl: data/raw/wikipedia.jsonl
+  processed_dir: data/processed
+  best_model_dir: outputs/punctuation-xlm-r-base/best

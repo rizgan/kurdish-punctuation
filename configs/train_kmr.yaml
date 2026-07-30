@@ -1,0 +1,37 @@
+# Fine-tune FullStop for Kurmanji Latin (kmr_Latn) on 1x RTX 4090 24GB
+
+base_model: oliverguhr/fullstop-punctuation-multilang-large
+# Lighter alternative if VRAM is tight:
+# base_model: oliverguhr/fullstop-punctuation-multilingual-sonar-base
+
+output_dir: checkpoints/kmr-fullstop
+train_file: data/processed/train.jsonl
+dev_file: data/processed/dev.jsonl
+test_file: data/processed/test.jsonl
+
+# If the 4090 is occupied (e.g. omnilingual Docker), free VRAM first:
+#   docker stop <asr-container>
+# Or temporarily use the smaller base model + tinier batch in this file.
+num_train_epochs: 3
+per_device_train_batch_size: 8
+per_device_eval_batch_size: 16
+gradient_accumulation_steps: 2
+learning_rate: 2.0e-5
+weight_decay: 0.01
+warmup_ratio: 0.06
+max_length: 256
+fp16: true
+gradient_checkpointing: true
+dataloader_num_workers: 2
+logging_steps: 50
+eval_strategy: epoch
+save_strategy: epoch
+load_best_model_at_end: true
+metric_for_best_model: f1
+greater_is_better: true
+seed: 42
+
+# Optional private Hub push (set HF_TOKEN in env, never commit it)
+push_to_hub: false
+hub_model_id: null
+hub_private: true

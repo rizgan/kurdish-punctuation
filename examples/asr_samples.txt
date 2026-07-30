@@ -1,0 +1,9 @@
+# Qualitative Kurmanji Latin samples (ASR-like).
+# Format: optional_gold | asr_like_text
+# Or a punctuated sentence (script will strip punct for the input side).
+
+Li Kurdistanê gelek çiyayên bilind hene. | li kurdistanê gelek çiyayên bilind hene
+Ew dibêje ku ewê sibê were. | ew dibêje ku ewê sibê were
+Tu baş î? Ez baş im. | tu baş î ez baş im
+Navê min Amed e û ez li Diyarbekirê dijîm. | navê min amed e û ez li diyarbekirê dijîm
+Kengê em dê biçin bajêr, sibê an parê? | kengê em dê biçin bajêr sibê an parê
