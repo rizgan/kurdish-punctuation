@@ -30,3 +30,13 @@ def test_pipeline_lower_then_rule():
     out = capitalize_sentence_starts(kurmanji_lower(text))
     assert out.startswith("Ez ")
     assert ". Navê " in out or ".Navê " in out
+
+
+def test_url_email_decimal_dots_do_not_trigger():
+    text = "binêre https://ku.wikipedia.org û name@example.com û 42.5"
+    out = capitalize_sentence_starts(text)
+    assert "https://ku.wikipedia.org" in out
+    assert "name@example.com" in out
+    assert "42.5" in out
+    assert "Wikipedia" not in out
+    assert ".Com" not in out

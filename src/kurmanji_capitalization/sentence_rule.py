@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .casing import first_letter_index, is_letter, kurmanji_title_token, to_nfc
+from .casing import first_letter_index, kurmanji_title_token, to_nfc
 from .constants import SENTENCE_END_PUNCT, SUPPORTED_PUNCT
+from .text_utils import reconstruct_with_spacing, tokenize_words_and_punct
 
 
 @dataclass(frozen=True)
@@ -18,7 +19,6 @@ class SentenceRuleConfig:
     capitalize_word_after_leading_number: bool = False
 
 
-LEADING_SKIP = frozenset("\"'«»“”‘’()[]{}<> ")
 SKIP_TOKENS = SUPPORTED_PUNCT | frozenset("\"'«»“”‘’()[]{}<>")
 
 
@@ -30,60 +30,6 @@ def _should_trigger(ch: str, cfg: SentenceRuleConfig) -> bool:
     if ch == "!" and cfg.capitalize_after_exclamation:
         return True
     return False
-
-
-def capitalize_sentence_starts(
-    text: str,
-    cfg: SentenceRuleConfig | None = None,
-) -> str:
-    """
-    Title-case the first letter-word of the text and after . ? ! .
-    Does not alter other letters in the token; skips quotes/brackets between
-    terminator and the next word.
-    """
-    cfg = cfg or SentenceRuleConfig()
-    text = to_nfc(text)
-    if not text:
-        return text
-
-    chars = list(text)
-    n = len(chars)
-    capitalize_next = bool(cfg.capitalize_first_word)
-    i = 0
-    while i < n:
-        ch = chars[i]
-        if capitalize_next:
-            if cfg.skip_leading_quotes and ch in LEADING_SKIP:
-                i += 1
-                continue
-            if ch.isdigit():
-                while i < n and (chars[i].isdigit() or chars[i] in ".,"):
-                    i += 1
-                if not cfg.capitalize_word_after_leading_number:
-                    capitalize_next = False
-                continue
-            if is_letter(ch):
-                j = i
-                while j < n and (
-                    is_letter(chars[j])
-                    or chars[j].isdigit()
-                    or chars[j] in "'’-"
-                ):
-                    j += 1
-                token = "".join(chars[i:j])
-                titled = kurmanji_title_token(token)
-                chars[i:j] = list(titled)
-                capitalize_next = False
-                i = j
-                continue
-            i += 1
-            continue
-
-        if ch in SENTENCE_END_PUNCT and _should_trigger(ch, cfg):
-            capitalize_next = True
-        i += 1
-
-    return "".join(chars)
 
 
 def sentence_start_word_indices(
@@ -112,3 +58,29 @@ def sentence_start_word_indices(
             starts.add(i)
             capitalize_next = False
     return starts
+
+
+def capitalize_sentence_starts(
+    text: str,
+    cfg: SentenceRuleConfig | None = None,
+) -> str:
+    """
+    Title-case the first letter-word of the text and after standalone . ? ! tokens.
+
+    Token-based (not character-based) so periods inside URLs, emails, and decimals
+    do not trigger a new sentence.
+    """
+    cfg = cfg or SentenceRuleConfig()
+    text = to_nfc(text)
+    if not text:
+        return text
+
+    tokens = tokenize_words_and_punct(text)
+    if not tokens:
+        return text
+
+    starts = sentence_start_word_indices(tokens, cfg)
+    new_tokens = [
+        kurmanji_title_token(tok) if i in starts else tok for i, tok in enumerate(tokens)
+    ]
+    return reconstruct_with_spacing(text, new_tokens)

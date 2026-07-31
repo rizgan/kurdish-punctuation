@@ -15,14 +15,27 @@ Models do **not** change words, spelling, or Kurmanji letters — only insert `,
 python restore_text.py `
   --punctuation-model models/punctuation/kurmanji-xlm-r-base-v2 `
   --capitalization-model models/capitalization/kurmanji-xlm-r-base-v1 `
-  --text "ez li amedê dijîm navê min azad e tu li ku dijî"
+  --input input.txt `
+  --output output.txt
+
+python restore_text.py --mode full --text "ez li amedê dijîm navê min azad e tu li ku dijî"
 ```
 
 ```text
 Ez li Amedê dijîm. Navê min Azad e. Tu li ku dijî?
 ```
 
-Modes: `--full` (default), `--punctuation-only`, `--capitalization-only`, `--json-output`.
+Modes: `--mode full` (default), `--mode punctuation`, `--mode capitalization`, `--json-output`.
+
+Production capitalization thresholds: `TITLE=0.80`, `UPPER=0.85`.
+
+Pre-release smoke (edge cases + optional article / long-text gates):
+
+```powershell
+python scripts/smoke_test_production_pipeline.py `
+  --max-articles 400 `
+  --long-text-words 10000
+```
 
 | Component | Status | Path |
 |-----------|--------|------|
