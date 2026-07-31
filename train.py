@@ -46,7 +46,15 @@ def set_all_seeds(seed: int) -> None:
     set_seed(seed)
 
 
-def tokenize_batch(examples, tokenizer, max_length: int):
+def tokenize_batch(
+    examples,
+    tokenizer,
+    max_length: int,
+    *,
+    ignore_left_edge_words: int = 0,
+    ignore_right_edge_words: int = 0,
+    apply_edge_mask: bool = False,
+):
     enc = tokenizer(
         examples["tokens"],
         is_split_into_words=True,
@@ -56,7 +64,19 @@ def tokenize_batch(examples, tokenizer, max_length: int):
     all_labels = []
     for i, labs in enumerate(examples["labels"]):
         word_ids = enc.word_ids(batch_index=i)
-        label_ids = [LABEL2ID[x] for x in labs]
+        label_ids: list[int] = []
+        for x in labs:
+            if x == -100:
+                label_ids.append(-100)
+            else:
+                label_ids.append(LABEL2ID[x])
+        n_words = len(label_ids)
+        if apply_edge_mask and n_words > (ignore_left_edge_words + ignore_right_edge_words + 4):
+            left = max(0, int(ignore_left_edge_words))
+            right = max(0, int(ignore_right_edge_words))
+            for wi in range(n_words):
+                if wi < left or wi >= n_words - right:
+                    label_ids[wi] = -100
         all_labels.append(align_labels_to_last_subtoken(word_ids, label_ids))
     enc["labels"] = all_labels
     return enc
@@ -140,14 +160,28 @@ def main() -> int:
         model.gradient_checkpointing_enable()
 
     max_length = int(cfg["model"]["max_length"])
+    ds_cfg = cfg.get("dataset", {})
+    edge_l = int(ds_cfg.get("ignore_left_edge_words", 0))
+    edge_r = int(ds_cfg.get("ignore_right_edge_words", 0))
+
     train_ds = Dataset.from_list(train_rows)
     val_ds = Dataset.from_list(val_rows)
 
-    def _tok(batch):
-        return tokenize_batch(batch, tokenizer, max_length)
+    def _tok_train(batch):
+        return tokenize_batch(
+            batch,
+            tokenizer,
+            max_length,
+            ignore_left_edge_words=edge_l,
+            ignore_right_edge_words=edge_r,
+            apply_edge_mask=True,
+        )
 
-    train_tok = train_ds.map(_tok, batched=True, remove_columns=train_ds.column_names)
-    val_tok = val_ds.map(_tok, batched=True, remove_columns=val_ds.column_names)
+    def _tok_val(batch):
+        return tokenize_batch(batch, tokenizer, max_length, apply_edge_mask=False)
+
+    train_tok = train_ds.map(_tok_train, batched=True, remove_columns=train_ds.column_names)
+    val_tok = val_ds.map(_tok_val, batched=True, remove_columns=val_ds.column_names)
 
     training_args = make_training_args(cfg, output_dir)
     callbacks = []

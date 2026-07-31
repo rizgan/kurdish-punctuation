@@ -1,17 +1,15 @@
-"""Dataset building: sentences → tokens/labels; article-level splits."""
+"""Dataset building: continuous word windows + article-level splits."""
 
 from __future__ import annotations
 
 import json
 import random
-import re
 from collections import Counter
 from pathlib import Path
 from typing import Any, Iterator
 
 from .constants import (
     LABEL2ID,
-    LABEL_TO_PUNCTUATION,
     LABELS,
     PUNCTUATION_TO_LABEL,
     SENTENCE_END_PUNCT,
@@ -40,7 +38,6 @@ def tokens_and_labels_from_text(text: str) -> tuple[list[str], list[str]] | None
         if j < len(raw_toks) and raw_toks[j] in SUPPORTED_PUNCT:
             label = PUNCTUATION_TO_LABEL[raw_toks[j]]
             j += 1
-            # Collapse doubled punctuation: keep first mapped label, skip extras.
             while j < len(raw_toks) and raw_toks[j] in SUPPORTED_PUNCT:
                 j += 1
         tokens.append(tok)
@@ -52,7 +49,7 @@ def tokens_and_labels_from_text(text: str) -> tuple[list[str], list[str]] | None
 
 
 def split_into_sentence_spans(text: str) -> list[str]:
-    """Split on . ? ! keeping the terminator on the sentence."""
+    """Split on . ? ! keeping the terminator on the sentence (eval helpers only)."""
     text = text.strip()
     if not text:
         return []
@@ -71,60 +68,155 @@ def split_into_sentence_spans(text: str) -> list[str]:
     return parts
 
 
-def chunk_long_sample(
+def subtoken_length(tokenizer, words: list[str]) -> int:
+    enc = tokenizer(
+        words,
+        is_split_into_words=True,
+        add_special_tokens=True,
+        truncation=False,
+    )
+    return len(enc["input_ids"])
+
+
+def choose_largest_end_that_fits_xlmr(
+    tokenizer,
+    tokens: list[str],
+    start: int,
+    *,
+    preferred_end: int,
+    max_length: int,
+) -> int:
+    """
+    Largest end in (start, preferred_end] such that tokens[start:end]
+    encode to <= max_length subtokens (incl. special tokens).
+    Does NOT snap to sentence boundaries.
+    """
+    preferred_end = min(preferred_end, len(tokens))
+    if preferred_end <= start:
+        return start
+    lo, hi = start + 1, preferred_end
+    best = start
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if subtoken_length(tokenizer, tokens[start:mid]) <= max_length:
+            best = mid
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    if best == start and start < len(tokens):
+        # Single-word fallback even if it truncates later at train time.
+        best = start + 1
+    return best
+
+
+def iter_word_windows(
+    article_id: str,
     tokens: list[str],
     labels: list[str],
-    max_words: int,
-) -> list[tuple[list[str], list[str]]]:
-    """Split long sequences on COMMA boundaries when possible."""
-    if len(tokens) <= max_words:
-        return [(tokens, labels)]
-    chunks: list[tuple[list[str], list[str]]] = []
-    start = 0
-    n = len(tokens)
-    while start < n:
-        end = min(start + max_words, n)
-        if end < n:
-            # Prefer to break after a COMMA within the window.
-            cut = None
-            for k in range(end - 1, start + max(1, max_words // 3) - 1, -1):
-                if labels[k] == "COMMA":
-                    cut = k + 1
-                    break
-            if cut is not None:
-                end = cut
-        chunks.append((tokens[start:end], labels[start:end]))
-        start = end
-    return chunks
-
-
-def iter_samples_from_article(
-    article_id: str,
-    text: str,
     *,
-    map_ellipsis_to_period: bool = True,
-    min_words: int = 3,
-    max_words: int = 180,
+    tokenizer,
+    rng: random.Random,
+    max_model_length: int = 256,
+    min_words: int = 80,
+    target_words_min: int = 110,
+    target_words_max: int = 180,
+    overlap_words: int = 8,
+    absolute_min_words: int = 40,
 ) -> Iterator[dict[str, Any]]:
-    text = normalize_for_dataset(text, map_ellipsis_to_period=map_ellipsis_to_period)
-    if not text:
+    """Slice a full-article token sequence into continuous windows."""
+    n = len(tokens)
+    if n < absolute_min_words:
         return
+    if n < min_words:
+        # Keep short-but-usable articles as a single sample (no tiny tails).
+        yield {
+            "id": f"{article_id}_000001",
+            "article_id": article_id,
+            "tokens": tokens,
+            "labels": labels,
+        }
+        return
+
+    start = 0
     sample_idx = 0
-    for sent in split_into_sentence_spans(text):
-        pair = tokens_and_labels_from_text(sent)
-        if not pair:
-            continue
-        tokens, labels = pair
-        for tok_chunk, lab_chunk in chunk_long_sample(tokens, labels, max_words):
-            if len(tok_chunk) < min_words:
-                continue
-            sample_idx += 1
-            yield {
-                "id": f"{article_id}_{sample_idx:06d}",
-                "article_id": article_id,
-                "tokens": tok_chunk,
-                "labels": lab_chunk,
-            }
+    while start < n:
+        remaining = n - start
+        if remaining < absolute_min_words and sample_idx > 0:
+            break
+
+        target = rng.randint(target_words_min, target_words_max)
+        if remaining < min_words and sample_idx > 0:
+            # Expand last window backward instead of emitting a stub.
+            start = max(0, n - max(min_words, min(target, remaining + overlap_words)))
+            remaining = n - start
+
+        preferred_end = min(start + target, n)
+        end = choose_largest_end_that_fits_xlmr(
+            tokenizer,
+            tokens,
+            start,
+            preferred_end=preferred_end,
+            max_length=max_model_length,
+        )
+        if end <= start:
+            break
+
+        # If this would leave a tiny remainder, absorb it into this window if it fits.
+        rem_after = n - end
+        if 0 < rem_after < absolute_min_words:
+            end2 = choose_largest_end_that_fits_xlmr(
+                tokenizer,
+                tokens,
+                start,
+                preferred_end=n,
+                max_length=max_model_length,
+            )
+            if end2 > end:
+                end = end2
+
+        sample_idx += 1
+        yield {
+            "id": f"{article_id}_{sample_idx:06d}",
+            "article_id": article_id,
+            "tokens": tokens[start:end],
+            "labels": labels[start:end],
+        }
+
+        if end >= n:
+            break
+        next_start = max(end - overlap_words, start + 1)
+        if next_start >= n:
+            break
+        # Avoid infinite loop on pathological overlap.
+        if next_start <= start:
+            next_start = end
+        start = next_start
+
+
+def window_period_stats(rows: list[dict]) -> dict[str, Any]:
+    period_total = 0
+    period_at_last = 0
+    hist = Counter()
+    for row in rows:
+        labs = row["labels"]
+        n_per = sum(1 for x in labs if x == "PERIOD")
+        period_total += n_per
+        if labs and labs[-1] == "PERIOD":
+            period_at_last += 1
+        if n_per == 0:
+            hist["samples_without_period"] += 1
+        elif n_per == 1:
+            hist["samples_with_1_period"] += 1
+        else:
+            hist["samples_with_2_or_more_periods"] += 1
+    frac = (period_at_last / period_total) if period_total else 0.0
+    return {
+        "period_total": period_total,
+        "period_at_last_word": period_at_last,
+        "period_inside_window": period_total - period_at_last,
+        "fraction_of_period_labels_at_final_word": frac,
+        **dict(hist),
+    }
 
 
 def load_raw_jsonl(path: Path) -> list[dict[str, str]]:
@@ -193,14 +285,38 @@ def build_processed_dataset(
     *,
     seed: int = 42,
     map_ellipsis_to_period: bool = True,
-    min_words: int = 3,
-    max_words: int = 180,
+    tokenizer_name: str = "FacebookAI/xlm-roberta-base",
+    max_model_length: int = 256,
+    min_words_per_window: int = 80,
+    target_words_min: int = 110,
+    target_words_max: int = 180,
+    train_overlap_words: int = 8,
+    val_overlap_words: int = 0,
+    test_overlap_words: int = 0,
+    max_articles: int | None = None,
 ) -> dict[str, Any]:
+    from transformers import AutoTokenizer
+
     articles = load_raw_jsonl(input_jsonl)
+    if max_articles is not None:
+        rng0 = random.Random(seed)
+        articles = list(articles)
+        rng0.shuffle(articles)
+        articles = articles[:max_articles]
+
     train_ids, val_ids, test_ids = split_article_ids(
         [a["article_id"] for a in articles], seed=seed
     )
+    tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+    rng = random.Random(seed)
+
     splits: dict[str, list[dict]] = {"train": [], "validation": [], "test": []}
+    overlap_by_split = {
+        "train": train_overlap_words,
+        "validation": val_overlap_words,
+        "test": test_overlap_words,
+    }
+
     for art in articles:
         aid = art["article_id"]
         if aid in train_ids:
@@ -209,12 +325,23 @@ def build_processed_dataset(
             bucket = "validation"
         else:
             bucket = "test"
-        for sample in iter_samples_from_article(
+
+        text = normalize_for_dataset(art["text"], map_ellipsis_to_period=map_ellipsis_to_period)
+        pair = tokens_and_labels_from_text(text)
+        if not pair:
+            continue
+        tokens, labels = pair
+        for sample in iter_word_windows(
             aid,
-            art["text"],
-            map_ellipsis_to_period=map_ellipsis_to_period,
-            min_words=min_words,
-            max_words=max_words,
+            tokens,
+            labels,
+            tokenizer=tokenizer,
+            rng=rng,
+            max_model_length=max_model_length,
+            min_words=min_words_per_window,
+            target_words_min=target_words_min,
+            target_words_max=target_words_max,
+            overlap_words=int(overlap_by_split[bucket]),
         ):
             splits[bucket].append(sample)
 
@@ -224,14 +351,25 @@ def build_processed_dataset(
     write_jsonl(output_dir / "validation.jsonl", splits["validation"])
     write_jsonl(output_dir / "test.jsonl", splits["test"])
 
+    period_stats = {k: window_period_stats(v) for k, v in splits.items()}
     stats = {
+        "sample_mode": "continuous_word_windows",
         "n_articles": len(articles),
         "n_articles_train": len(train_ids),
         "n_articles_validation": len(val_ids),
         "n_articles_test": len(test_ids),
         "n_samples": {k: len(v) for k, v in splits.items()},
         "label_counts": {k: label_distribution(v) for k, v in splits.items()},
+        "period_window_stats": period_stats,
         "seed": seed,
+        "tokenizer_name": tokenizer_name,
+        "max_model_length": max_model_length,
+        "min_words_per_window": min_words_per_window,
+        "target_words_min": target_words_min,
+        "target_words_max": target_words_max,
+        "train_overlap_words": train_overlap_words,
+        "val_overlap_words": val_overlap_words,
+        "test_overlap_words": test_overlap_words,
         "article_overlap_check": "passed",
     }
     (output_dir / "statistics.json").write_text(

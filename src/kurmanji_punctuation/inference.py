@@ -112,6 +112,55 @@ class PunctuationRestorer:
         # Any missing word (truncated away): zeros — caller should avoid via windows.
         return word_logits
 
+    def mean_logits_for_words(self, words: list[str]) -> np.ndarray:
+        """Windowed inference → mean logits [n_words, num_labels]."""
+        if not words:
+            return np.zeros((0, len(LABELS)), dtype=np.float64)
+        n = len(words)
+        sum_logits = np.zeros((n, len(LABELS)), dtype=np.float64)
+        counts = np.zeros(n, dtype=np.float64)
+        for start, end in self._windows(words):
+            window_words = words[start:end]
+            w_logits = self._logits_for_window(window_words)
+            for local_i in range(len(window_words)):
+                g = start + local_i
+                sum_logits[g] += w_logits[local_i]
+                counts[g] += 1.0
+        if np.any(counts == 0):
+            missing = int(np.where(counts == 0)[0][0])
+            raise RuntimeError(f"Word index {missing} was not covered by any window")
+        return sum_logits / counts[:, None]
+
+    @staticmethod
+    def softmax_rows(logits: np.ndarray) -> np.ndarray:
+        if logits.size == 0:
+            return logits
+        shifted = logits - logits.max(axis=-1, keepdims=True)
+        e = np.exp(shifted)
+        return e / e.sum(axis=-1, keepdims=True)
+
+    def decode_probs(
+        self,
+        probs: np.ndarray,
+        *,
+        apply_thresholds: bool = True,
+        minimum_confidence: dict[str, float] | None = None,
+    ) -> list[tuple[str, float]]:
+        """Decode per-word (label, confidence) from probability rows."""
+        thr_map = minimum_confidence if minimum_confidence is not None else self.minimum_confidence
+        out: list[tuple[str, float]] = []
+        for row in probs:
+            pred_id = int(row.argmax())
+            label = ID2LABEL[pred_id]
+            conf = float(row[pred_id])
+            if apply_thresholds and label != "O":
+                thr = float(thr_map.get(label, 0.0))
+                if conf < thr:
+                    label = "O"
+                    conf = float(row[LABELS.index("O")])
+            out.append((label, conf))
+        return out
+
     def predict_tokens(self, text: str) -> list[dict[str, Any]]:
         text = normalize_for_inference(text)
         if text == "":
@@ -141,28 +190,19 @@ class PunctuationRestorer:
         if not words:
             return []
 
-        n = len(words)
-        sum_logits = np.zeros((n, len(LABELS)), dtype=np.float64)
-        counts = np.zeros(n, dtype=np.float64)
+        # Only run the model on positions without existing punctuation.
+        model_idx = [i for i, p in enumerate(existing_punct) if not p]
+        model_words = [words[i] for i in model_idx]
+        probs_by_global: dict[int, np.ndarray] = {}
+        if model_words:
+            logits = self.mean_logits_for_words(model_words)
+            probs = self.softmax_rows(logits)
+            for local_i, g in enumerate(model_idx):
+                probs_by_global[g] = probs[local_i]
 
-        for start, end in self._windows(words):
-            window_words = words[start:end]
-            w_logits = self._logits_for_window(window_words)
-            for local_i in range(len(window_words)):
-                g = start + local_i
-                sum_logits[g] += w_logits[local_i]
-                counts[g] += 1.0
-
-        # Ensure no word was skipped.
-        if np.any(counts == 0):
-            missing = int(np.where(counts == 0)[0][0])
-            raise RuntimeError(f"Word index {missing} was not covered by any window")
-
-        mean_logits = sum_logits / counts[:, None]
         results: list[dict[str, Any]] = []
         for i, word in enumerate(words):
             if existing_punct[i]:
-                # Do not duplicate: keep existing mark, skip model punct.
                 lab = next(
                     (k for k, v in LABEL_TO_PUNCTUATION.items() if v == existing_punct[i]),
                     "O",
@@ -176,19 +216,8 @@ class PunctuationRestorer:
                     }
                 )
                 continue
-
-            logits = mean_logits[i]
-            # softmax
-            e = np.exp(logits - logits.max())
-            probs = e / e.sum()
-            pred_id = int(probs.argmax())
-            label = ID2LABEL[pred_id]
-            conf = float(probs[pred_id])
-            if label != "O":
-                thr = float(self.minimum_confidence.get(label, 0.0))
-                if conf < thr:
-                    label = "O"
-                    conf = float(probs[LABELS.index("O")])
+            row = probs_by_global[i]
+            label, conf = self.decode_probs(row.reshape(1, -1))[0]
             results.append(
                 {
                     "token": word,

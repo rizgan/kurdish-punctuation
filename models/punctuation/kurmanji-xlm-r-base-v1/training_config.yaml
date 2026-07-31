@@ -1,0 +1,66 @@
+dataset:
+  ignore_left_edge_words: 2
+  ignore_right_edge_words: 4
+  map_ellipsis_to_period: true
+  max_model_length: 256
+  min_words_per_window: 80
+  sample_mode: continuous_word_windows
+  seed: 42
+  target_words_max: 180
+  target_words_min: 110
+  test_overlap_words: 0
+  test_ratio: 0.05
+  train_overlap_words: 8
+  train_ratio: 0.9
+  val_overlap_words: 0
+  validation_ratio: 0.05
+early_stopping:
+  enabled: true
+  patience: 2
+evaluation:
+  long_text_validation: true
+  long_text_validation_articles: 100
+  window_validation: true
+inference:
+  batch_size: 16
+  max_length: 256
+  minimum_confidence:
+    COMMA: 0.55
+    EXCLAMATION: 0.7
+    PERIOD: 0.55
+    QUESTION: 0.6
+  overlap_words: 32
+loss:
+  class_weight_method: inverse_sqrt
+  max_class_weight: 8.0
+  use_class_weights: true
+model:
+  max_length: 256
+  name: FacebookAI/xlm-roberta-base
+  num_labels: 5
+paths:
+  best_model_dir: outputs/punctuation-xlm-r-base-windows/best
+  processed_dir: data/processed
+  raw_wikipedia_jsonl: data/raw/wikipedia.jsonl
+project:
+  output_dir: outputs/punctuation-xlm-r-base-windows
+  seed: 42
+training:
+  dataloader_num_workers: 0
+  epochs: 3
+  eval_batch_size: 16
+  evaluation_strategy: epoch
+  gradient_accumulation_steps: 4
+  gradient_checkpointing: false
+  greater_is_better: true
+  learning_rate: 2.0e-05
+  load_best_model_at_end: true
+  logging_steps: 50
+  max_grad_norm: 1.0
+  metric_for_best_model: punctuation_macro_f1
+  precision: bf16
+  save_strategy: epoch
+  save_total_limit: 3
+  train_batch_size: 8
+  warmup_ratio: 0.06
+  weight_decay: 0.01

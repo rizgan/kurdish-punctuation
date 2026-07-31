@@ -1,0 +1,36 @@
+{
+  "n_articles": 90697,
+  "n_articles_train": 81627,
+  "n_articles_validation": 4534,
+  "n_articles_test": 4536,
+  "n_samples": {
+    "train": 357606,
+    "validation": 19245,
+    "test": 20967
+  },
+  "label_counts": {
+    "train": {
+      "O": 5108243,
+      "COMMA": 272593,
+      "PERIOD": 343455,
+      "QUESTION": 869,
+      "EXCLAMATION": 7160
+    },
+    "validation": {
+      "O": 273120,
+      "COMMA": 14139,
+      "PERIOD": 18289,
+      "QUESTION": 40,
+      "EXCLAMATION": 569
+    },
+    "test": {
+      "O": 298977,
+      "COMMA": 15599,
+      "PERIOD": 20236,
+      "QUESTION": 70,
+      "EXCLAMATION": 332
+    }
+  },
+  "seed": 42,
+  "article_overlap_check": "passed"
+}

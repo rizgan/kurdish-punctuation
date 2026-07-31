@@ -1,0 +1,70 @@
+{
+  "sample_mode": "continuous_word_windows",
+  "n_articles": 1000,
+  "n_articles_train": 900,
+  "n_articles_validation": 50,
+  "n_articles_test": 50,
+  "n_samples": {
+    "train": 376,
+    "validation": 17,
+    "test": 19
+  },
+  "label_counts": {
+    "train": {
+      "O": 38335,
+      "COMMA": 2470,
+      "PERIOD": 3015,
+      "QUESTION": 4,
+      "EXCLAMATION": 48
+    },
+    "validation": {
+      "O": 1827,
+      "COMMA": 62,
+      "PERIOD": 122,
+      "QUESTION": 0,
+      "EXCLAMATION": 0
+    },
+    "test": {
+      "O": 1812,
+      "COMMA": 156,
+      "PERIOD": 130,
+      "QUESTION": 0,
+      "EXCLAMATION": 1
+    }
+  },
+  "period_window_stats": {
+    "train": {
+      "period_total": 3015,
+      "period_at_last_word": 134,
+      "period_inside_window": 2881,
+      "fraction_of_period_labels_at_final_word": 0.044444444444444446,
+      "samples_with_2_or_more_periods": 373,
+      "samples_without_period": 1,
+      "samples_with_1_period": 2
+    },
+    "validation": {
+      "period_total": 122,
+      "period_at_last_word": 8,
+      "period_inside_window": 114,
+      "fraction_of_period_labels_at_final_word": 0.06557377049180328,
+      "samples_with_2_or_more_periods": 17
+    },
+    "test": {
+      "period_total": 130,
+      "period_at_last_word": 9,
+      "period_inside_window": 121,
+      "fraction_of_period_labels_at_final_word": 0.06923076923076923,
+      "samples_with_2_or_more_periods": 19
+    }
+  },
+  "seed": 42,
+  "tokenizer_name": "FacebookAI/xlm-roberta-base",
+  "max_model_length": 256,
+  "min_words_per_window": 80,
+  "target_words_min": 110,
+  "target_words_max": 180,
+  "train_overlap_words": 8,
+  "val_overlap_words": 0,
+  "test_overlap_words": 0,
+  "article_overlap_check": "passed"
+}

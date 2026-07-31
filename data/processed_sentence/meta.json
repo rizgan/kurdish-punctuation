@@ -1,0 +1,17 @@
+{
+  "n_articles": 115885,
+  "n_examples": 444564,
+  "n_train": 373434,
+  "n_dev": 35565,
+  "n_test": 35565,
+  "label_counts": {
+    "0": 6560874,
+    ":": 186148,
+    ",": 313257,
+    ".": 403771,
+    "-": 161071,
+    "?": 1603
+  },
+  "dump": "data\\raw\\kuwiki-latest-pages-articles.xml.bz2",
+  "note": "Train domain is Wikipedia; expect domain gap on TV/YouTube ASR."
+}

@@ -5,10 +5,32 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 data/processed_fullstop/
+data/processed_sentence/*
+!data/processed_sentence/.gitkeep
+!data/processed_sentence/statistics.json
+!data/processed_sentence/meta.json
+data/processed_sanity/*
+!data/processed_sanity/.gitkeep
+!data/processed_sanity/statistics.json
 checkpoints/*
 !checkpoints/.gitkeep
 outputs/
 onnx/
+models/**/*.safetensors
+models/**/tokenizer.json
+models/**/sentencepiece.bpe.model
+models/**/training_args.bin
+!models/**/model_card.md
+!models/**/evaluation_report.json
+!models/**/training_config.yaml
+!models/**/labels.json
+!models/**/config.json
+!models/**/SHA256SUMS.txt
+!models/**/DATASET_SHA256SUMS.txt
+!models/**/run_info.json
+!models/**/smoke_test_report.json
+!models/**/dataset_statistics.json
+!models/**/long_text_eval.json
 wandb/
 runs/
 *.bz2
@@ -25,8 +47,9 @@ runs/
 !.env.example
 *.pem
 hf_token*
-token*
-
+# Hugging Face token files only (do not match tokenizer*)
+**/hf_token*
+**/*hf_token*
 # Python
 __pycache__/
 *.py[cod]

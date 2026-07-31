@@ -76,13 +76,26 @@ python prepare_dataset.py --input data/raw/wikipedia.jsonl --output-dir data/pro
 
 Splits are **by `article_id`** (90/5/5, seed 42) with an overlap assertion.
 
-## Train on RTX 4090
+Best **frozen** checkpoint: `models/punctuation/kurmanji-xlm-r-base-v1` (`kurmanji-punctuation-xlm-r-base-v1.0`). See `model_card.md` there.
+
+Integrity: `SHA256SUMS.txt`, `requirements-lock.txt`, `run_info.json` (git/torch/cuda/`dataset_hash`).
 
 ```powershell
-python train.py --config config.yaml
+python scripts/smoke_test_v1.py --model models/punctuation/kurmanji-xlm-r-base-v1
 ```
 
-Uses BF16 on Ampere+ (4090); otherwise FP16. Class weights: `1/sqrt(freq)` normalized so `O=1`, clipped at 8. Checkpoint: `outputs/punctuation-xlm-r-base/best`.
+Training run artifacts (may be overwritten by experiments): `outputs/punctuation-xlm-r-base-windows/`.  
+Sentence-level legacy data: `data/processed_sentence/`.
+
+```powershell
+python prepare_dataset.py --input data/raw/wikipedia.jsonl --output-dir data/processed --config config.yaml
+# Train into a NEW output_dir only — never overwrite models/punctuation/kurmanji-xlm-r-base-v1
+python train.py --config config.yaml
+python evaluate_long_text.py --model models/punctuation/kurmanji-xlm-r-base-v1 --max-articles 400 --tag check
+python predict.py --model models/punctuation/kurmanji-xlm-r-base-v1 --text "ez îro çûm bajarê lê baran dibariya"
+```
+
+Train examples are **continuous word windows** (not single sentences). Check `data/processed/statistics.json` → `fraction_of_period_labels_at_final_word` (should be ≪ 10%).
 
 ## Evaluate
 
@@ -93,7 +106,18 @@ python evaluate.py `
   --config config.yaml
 ```
 
-Primary metric: **`punctuation_macro_f1`** (mean F1 of COMMA/PERIOD/QUESTION/EXCLAMATION only).
+Primary metric on **sentence-level** test: **`punctuation_macro_f1`**.
+
+### Honest long-text check (important)
+
+Sentence-level PERIOD F1 can be inflated if each training/eval example is one sentence (the model learns “end of sequence ≈ PERIOD”). Re-check on whole articles:
+
+```powershell
+python evaluate_long_text.py --model outputs/punctuation-xlm-r-base/best --max-articles 400
+python tune_thresholds.py --model outputs/punctuation-xlm-r-base/best --max-samples 5000
+```
+
+Reports: `outputs/punctuation-xlm-r-base/long_text_eval.json`, `threshold_tuning.json`.
 
 ## Predict
 
