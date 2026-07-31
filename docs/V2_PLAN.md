@@ -85,6 +85,27 @@ Optional extra: dedicated question-test (500–1000 in-context items, held out f
 
 ---
 
+## Experiment sequence (controlled)
+
+Track every run in [`v2_experiments.md`](v2_experiments.md) / [`v2_experiments.csv`](v2_experiments.csv).
+
+| Run | Что меняем | Цель |
+| --- | ---------- | ---- |
+| **v2-exp-01** | Только реальные вопросы **внутри** multi-sentence контекста; sampling weight **1.0** | Эффект корпуса без oversampling |
+| **v2-exp-02** | Тот же корпус + question-window weight **2.0–3.0** | Отделить вклад sampling |
+
+Не смешивать оба изменения в одном первом запуске.
+
+Comparative table (fill after each long-text eval):
+
+| Run         | Новый question corpus | Sampling weight | QUESTION F1 | PERIOD F1 | COMMA F1 | Boundary F1 | Preservation | Gate      |
+| ----------- | --------------------: | --------------: | ----------: | --------: | -------: | ----------: | -----------: | --------- |
+| v1 baseline |                     0 |             1.0 |        0.62 |      0.93 |     0.66 |        0.93 |          1.0 | baseline  |
+| v2-exp-01   |          real Q+ctx   |             1.0 |             |           |          |             |              |           |
+| v2-exp-02   |     same as exp-01    |         2.0–3.0 |             |           |          |             |              |           |
+
+---
+
 ## Checklist before tagging v2.0-question
 
 1. [ ] New corpus merged into continuous windows (questions inside multi-sentence context)

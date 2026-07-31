@@ -36,7 +36,7 @@ Training setup that made this honest:
 
 Earlier sentence-split model on the same long-text protocol: PERIOD F1 ≈ **0.30**, recall ≈ **0.18**.
 
-**v2** will keep architecture, windows, tokenizer, labels, the same 400-article long-text protocol, preservation, seed, and base HPs fixed — change only the question corpus / sampling / dataset hash / output path. Target ID: `kurmanji-punctuation-xlm-r-base-v2.0-question`. See [`docs/V2_PLAN.md`](docs/V2_PLAN.md).
+**v2** will keep architecture, windows, tokenizer, labels, the same 400-article long-text protocol, preservation, seed, and base HPs fixed — change only the question corpus / sampling / dataset hash / output path. Target ID: `kurmanji-punctuation-xlm-r-base-v2.0-question`. See [`docs/V2_PLAN.md`](docs/V2_PLAN.md) and the run table in [`docs/v2_experiments.md`](docs/v2_experiments.md).
 
 > Legacy FullStop fine-tune scripts live under `scripts/` + `src/kurdish_punctuation/` and `data/processed_fullstop/`. The active pipeline is this XLM-R project.
 
