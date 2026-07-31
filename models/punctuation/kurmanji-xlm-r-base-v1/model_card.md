@@ -92,13 +92,15 @@ print(r.restore("ez îro çûm bajarê lê baran dibariya"))
 
 ## Versioning / next steps (v2)
 
-Do **not** replace this folder. Train future runs into a new path, e.g. `kurmanji-xlm-r-base-v2`.
+Do **not** replace this folder. Train future runs into a new path, e.g. `kurmanji-xlm-r-base-v2-question`.
 
-Planned improvements (no architecture change required):
+**Frozen for v2:** architecture, continuous windows, tokenizer, labels, 400-article long-text eval, preservation algorithm, seed, base HPs.  
+**Allowed to change:** question corpus (in-context only), sampling weights, train `dataset_hash`, `output_dir`, model ID.
 
-1. Add 3k–10k+ questions **inside** multi-sentence contexts (`statement. question? answer.`).
-2. Dedicated question-test (500–1000 items) + track `QUESTION → PERIOD` / `QUESTION → O`.
-3. ASR benchmark (manual punct-only labels on ASR words) then light domain fine-tune.
+Target ID: `kurmanji-punctuation-xlm-r-base-v2.0-question`  
+Gate: QUESTION F1 ↑ while PERIOD / COMMA / sentence_boundary drop ≤ 0.01–0.02 and `text_preservation = 1.0`.
+
+Full checklist: [`docs/V2_PLAN.md`](../../docs/V2_PLAN.md).
 
 ## License notes
 
