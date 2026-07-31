@@ -1,0 +1,25 @@
+{
+  "source": "kurdish_ai_corpus",
+  "hf_id": "kurdish-ai/kurdish-corpus",
+  "hf_config": "parquet_kmr_shards_0002_0003",
+  "available_configs": [
+    "default"
+  ],
+  "retrieved_at": "2026-07-31",
+  "license": "CC BY 4.0",
+  "kmr_rows_scanned": 478540,
+  "question_kept_per_shard": {
+    "shard_0002.parquet": 13064,
+    "shard_0003.parquet": 1936
+  },
+  "question_candidate_records": 15000,
+  "files": {
+    "questions_raw.jsonl": {
+      "path": "data\\v2_question_raw\\kurdish_ai_corpus\\questions_raw.jsonl",
+      "sha256": "92aa9b88aa03c0cbba66f26bcff485bcf31a46df23494ee823c0a8898d66a30d",
+      "bytes": 75689688
+    }
+  },
+  "status": "downloaded",
+  "note": "Shards 0–1 are ckb-only and were skipped. Language labels are not trusted automatically; manual review of >=300 contexts required. First batch soft-capped at 15000."
+}

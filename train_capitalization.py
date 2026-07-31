@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Train XLM-RoBERTa token classifier for Kurmanji punctuation."""
+"""Train XLM-RoBERTa token classifier for Kurmanji capitalization (TITLE/UPPER/KEEP)."""
 
 from __future__ import annotations
 
@@ -25,17 +25,16 @@ from transformers import (
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from kurmanji_punctuation.constants import LABEL2ID, LABELS  # noqa: E402
-from kurmanji_punctuation.dataset import label_distribution, load_processed_jsonl  # noqa: E402
-from kurmanji_punctuation.label_alignment import align_labels_to_last_subtoken  # noqa: E402
-from kurmanji_punctuation.model import bf16_supported, load_model, load_tokenizer  # noqa: E402
-from kurmanji_punctuation.trainer import (  # noqa: E402
-    WeightedPunctuationTrainer,
+from kurmanji_capitalization.constants import IGNORE_LABEL, LABEL2ID, LABELS  # noqa: E402
+from kurmanji_capitalization.dataset import label_distribution, load_processed_jsonl  # noqa: E402
+from kurmanji_capitalization.label_alignment import align_labels_to_first_subtoken  # noqa: E402
+from kurmanji_capitalization.model import bf16_supported, load_model, load_tokenizer  # noqa: E402
+from kurmanji_capitalization.trainer import (  # noqa: E402
+    WeightedCapitalizationTrainer,
     build_compute_metrics,
     compute_class_weights,
     save_class_weights,
 )
-from torch.utils.data import WeightedRandomSampler  # noqa: E402
 
 
 def set_all_seeds(seed: int) -> None:
@@ -47,15 +46,7 @@ def set_all_seeds(seed: int) -> None:
     set_seed(seed)
 
 
-def tokenize_batch(
-    examples,
-    tokenizer,
-    max_length: int,
-    *,
-    ignore_left_edge_words: int = 0,
-    ignore_right_edge_words: int = 0,
-    apply_edge_mask: bool = False,
-):
+def tokenize_batch(examples, tokenizer, max_length: int):
     enc = tokenizer(
         examples["tokens"],
         is_split_into_words=True,
@@ -67,18 +58,11 @@ def tokenize_batch(
         word_ids = enc.word_ids(batch_index=i)
         label_ids: list[int] = []
         for x in labs:
-            if x == -100:
+            if x == IGNORE_LABEL or x == -100:
                 label_ids.append(-100)
             else:
                 label_ids.append(LABEL2ID[x])
-        n_words = len(label_ids)
-        if apply_edge_mask and n_words > (ignore_left_edge_words + ignore_right_edge_words + 4):
-            left = max(0, int(ignore_left_edge_words))
-            right = max(0, int(ignore_right_edge_words))
-            for wi in range(n_words):
-                if wi < left or wi >= n_words - right:
-                    label_ids[wi] = -100
-        all_labels.append(align_labels_to_last_subtoken(word_ids, label_ids))
+        all_labels.append(align_labels_to_first_subtoken(word_ids, label_ids))
     enc["labels"] = all_labels
     return enc
 
@@ -112,11 +96,7 @@ def make_training_args(cfg: dict, output_dir: Path) -> TrainingArguments:
     eval_strategy = t.get("evaluation_strategy", t.get("eval_strategy", "epoch"))
     save_strategy = t.get("save_strategy", "epoch")
     try:
-        return TrainingArguments(
-            **common,
-            eval_strategy=eval_strategy,
-            save_strategy=save_strategy,
-        )
+        return TrainingArguments(**common, eval_strategy=eval_strategy, save_strategy=save_strategy)
     except TypeError:
         return TrainingArguments(
             **common,
@@ -127,7 +107,7 @@ def make_training_args(cfg: dict, output_dir: Path) -> TrainingArguments:
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--config", type=Path, default=Path("config.yaml"))
+    p.add_argument("--config", type=Path, default=Path("configs/capitalization-v1.yaml"))
     p.add_argument("--max-train-samples", type=int, default=None)
     args = p.parse_args()
 
@@ -135,19 +115,7 @@ def main() -> int:
     seed = int(cfg["project"]["seed"])
     set_all_seeds(seed)
 
-    processed = Path(
-        cfg.get("paths", {}).get(
-            "processed_dir",
-            cfg.get("dataset", {}).get("processed_v2_dir")
-            or cfg.get("dataset", {}).get("processed_dir")
-            or "data/processed",
-        )
-    )
-    # Prefer explicit v2 processed dir when present in config
-    if cfg.get("dataset", {}).get("processed_v2_dir"):
-        v2p = Path(cfg["dataset"]["processed_v2_dir"])
-        if (v2p / "train.jsonl").exists():
-            processed = v2p
+    processed = Path(cfg.get("paths", {}).get("processed_dir", "data/processed_capitalization"))
     output_dir = Path(cfg["project"]["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
     best_dir = output_dir / "best"
@@ -157,26 +125,13 @@ def main() -> int:
     if args.max_train_samples:
         train_rows = train_rows[: args.max_train_samples]
 
-    sampling_weight = float(cfg.get("data", {}).get("sampling_weight", 1.0))
-    question_sampler = None
-    if sampling_weight != 1.0:
-        weights_list = []
-        for row in train_rows:
-            has_q = any(l == "QUESTION" for l in row["labels"]) or row.get("has_question")
-            weights_list.append(sampling_weight if has_q else 1.0)
-        question_sampler = WeightedRandomSampler(
-            weights=weights_list,
-            num_samples=len(weights_list),
-            replacement=True,
-        )
-
     counts = label_distribution(train_rows)
     weights = None
     if cfg.get("loss", {}).get("use_class_weights", True):
         weights = compute_class_weights(
             counts,
             method=cfg["loss"].get("class_weight_method", "inverse_sqrt"),
-            max_class_weight=float(cfg["loss"].get("max_class_weight", 8.0)),
+            max_class_weight=float(cfg["loss"].get("max_class_weight", 10.0)),
         )
         save_class_weights(output_dir / "class_weights.json", weights, counts)
 
@@ -186,34 +141,16 @@ def main() -> int:
         model.gradient_checkpointing_enable()
 
     max_length = int(cfg["model"]["max_length"])
-    ds_cfg = cfg.get("dataset", {})
-    edge_l = int(ds_cfg.get("ignore_left_edge_words", 0))
-    edge_r = int(ds_cfg.get("ignore_right_edge_words", 0))
-
     train_ds = Dataset.from_list(train_rows)
     val_ds = Dataset.from_list(val_rows)
 
-    def _tok_train(batch):
-        return tokenize_batch(
-            batch,
-            tokenizer,
-            max_length,
-            ignore_left_edge_words=edge_l,
-            ignore_right_edge_words=edge_r,
-            apply_edge_mask=True,
-        )
+    def _tok(batch):
+        return tokenize_batch(batch, tokenizer, max_length)
 
-    def _tok_val(batch):
-        return tokenize_batch(batch, tokenizer, max_length, apply_edge_mask=False)
-
-    train_tok = train_ds.map(_tok_train, batched=True, remove_columns=train_ds.column_names)
-    val_tok = val_ds.map(_tok_val, batched=True, remove_columns=val_ds.column_names)
+    train_tok = train_ds.map(_tok, batched=True, remove_columns=train_ds.column_names)
+    val_tok = val_ds.map(_tok, batched=True, remove_columns=val_ds.column_names)
 
     training_args = make_training_args(cfg, output_dir)
-    if question_sampler is not None:
-        # Trainer uses sampler only when shuffle would apply; disable group_by_length etc.
-        training_args.dataloader_drop_last = False
-
     callbacks = []
     if cfg.get("early_stopping", {}).get("enabled", True):
         callbacks.append(
@@ -223,27 +160,6 @@ def main() -> int:
         )
 
     collator = DataCollatorForTokenClassification(tokenizer=tokenizer)
-
-    class _SamplerTrainer(WeightedPunctuationTrainer):
-        def __init__(self, *a, weighted_sampler=None, **kw):
-            super().__init__(*a, **kw)
-            self._weighted_sampler = weighted_sampler
-
-        def get_train_dataloader(self):
-            if self._weighted_sampler is None:
-                return super().get_train_dataloader()
-            from torch.utils.data import DataLoader
-
-            return DataLoader(
-                self.train_dataset,
-                batch_size=self.args.train_batch_size,
-                sampler=self._weighted_sampler,
-                collate_fn=self.data_collator,
-                drop_last=self.args.dataloader_drop_last,
-                num_workers=self.args.dataloader_num_workers,
-                pin_memory=self.args.dataloader_pin_memory,
-            )
-
     trainer_kw = dict(
         model=model,
         args=training_args,
@@ -253,41 +169,11 @@ def main() -> int:
         compute_metrics=build_compute_metrics(),
         callbacks=callbacks,
         class_weights=weights,
-        weighted_sampler=question_sampler,
     )
     try:
-        trainer = _SamplerTrainer(**trainer_kw, processing_class=tokenizer)
+        trainer = WeightedCapitalizationTrainer(**trainer_kw, processing_class=tokenizer)
     except TypeError:
-        trainer = _SamplerTrainer(**trainer_kw, tokenizer=tokenizer)
-
-    # Effective sampling stats for question oversampling runs
-    n_q_win = sum(
-        1
-        for row in train_rows
-        if any(l == "QUESTION" for l in row["labels"]) or row.get("has_question")
-    )
-    (output_dir / "sampling_stats.json").write_text(
-        json.dumps(
-            {
-                "sampling_weight": sampling_weight,
-                "train_windows": len(train_rows),
-                "question_windows": n_q_win,
-                "ordinary_windows": len(train_rows) - n_q_win,
-                "effective_question_window_ratio_unweighted": n_q_win / len(train_rows)
-                if train_rows
-                else 0.0,
-                "effective_question_window_ratio_weighted_approx": (
-                    (n_q_win * sampling_weight)
-                    / (n_q_win * sampling_weight + (len(train_rows) - n_q_win))
-                    if train_rows
-                    else 0.0
-                ),
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+        trainer = WeightedCapitalizationTrainer(**trainer_kw, tokenizer=tokenizer)
 
     t0 = time.time()
     train_result = trainer.train()
@@ -317,13 +203,19 @@ def main() -> int:
         "train_loss": float(train_result.training_loss)
         if hasattr(train_result, "training_loss")
         else None,
-        "eval_metrics": {k: float(v) if isinstance(v, (int, float, np.floating)) else v for k, v in metrics.items()},
-        "best_metric": metrics.get(f"eval_{cfg['training']['metric_for_best_model']}", metrics.get(cfg["training"]["metric_for_best_model"])),
+        "eval_metrics": {
+            k: float(v) if isinstance(v, (int, float, np.floating)) else v
+            for k, v in metrics.items()
+        },
         "bf16": bool(training_args.bf16),
         "fp16": bool(training_args.fp16),
     }
-    (output_dir / "run_info.json").write_text(json.dumps(run_info, indent=2, ensure_ascii=False), encoding="utf-8")
-    (output_dir / "config.snapshot.yaml").write_text(yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8")
+    (output_dir / "run_info.json").write_text(
+        json.dumps(run_info, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    (output_dir / "config.snapshot.yaml").write_text(
+        yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8"
+    )
     print(json.dumps(run_info["eval_metrics"], indent=2))
     print(f"Saved best model -> {best_dir}")
     return 0

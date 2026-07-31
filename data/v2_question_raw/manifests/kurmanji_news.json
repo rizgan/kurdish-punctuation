@@ -1,0 +1,16 @@
+{
+  "source": "kurmanji_news",
+  "hf_id": "muzaffercky/kurdish-kurmanji-news",
+  "retrieved_at": "2026-07-31",
+  "license_note": "Dataset card does not list a clear redistribution license; retain URL provenance; do not treat HF hosting as license clearance.",
+  "question_candidate_articles": 35666,
+  "files": {
+    "questions_raw.jsonl": {
+      "path": "data\\v2_question_raw\\kurmanji_news\\questions_raw.jsonl",
+      "sha256": "98095005917c40c5c1ab09e40250c24c408fef3a7b28e44d690a4681c0f029dc",
+      "bytes": 184291704
+    }
+  },
+  "status": "downloaded",
+  "note": "Only articles containing '?' were kept. Prefer interviews/FAQ/quotes in filtering."
+}

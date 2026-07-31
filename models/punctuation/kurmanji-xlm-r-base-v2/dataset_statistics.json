@@ -1,0 +1,92 @@
+{
+  "sample_mode": "continuous_word_windows",
+  "n_samples": {
+    "train": 46053,
+    "validation": 2081,
+    "test": 2289
+  },
+  "v1_train_windows": 40714,
+  "new_question_articles": 3000,
+  "new_question_windows": 5339,
+  "constructed_context_share": 0.07133333333333333,
+  "label_counts": {
+    "train": {
+      "O": 4882070,
+      "COMMA": 266708,
+      "PERIOD": 324147,
+      "QUESTION": 5298,
+      "EXCLAMATION": 12286
+    },
+    "validation": {
+      "O": 220040,
+      "COMMA": 11714,
+      "PERIOD": 14726,
+      "QUESTION": 41,
+      "EXCLAMATION": 840
+    },
+    "test": {
+      "O": 245882,
+      "COMMA": 13197,
+      "PERIOD": 16475,
+      "QUESTION": 67,
+      "EXCLAMATION": 593
+    }
+  },
+  "period_window_stats": {
+    "train": {
+      "period_total": 324147,
+      "period_at_last_word": 13798,
+      "period_inside_window": 310349,
+      "fraction_of_period_labels_at_final_word": 0.04256710689903038,
+      "samples_with_2_or_more_periods": 45230,
+      "samples_with_1_period": 468,
+      "samples_without_period": 355
+    },
+    "validation": {
+      "period_total": 14726,
+      "period_at_last_word": 714,
+      "period_inside_window": 14012,
+      "fraction_of_period_labels_at_final_word": 0.04848567160124949,
+      "samples_with_2_or_more_periods": 2009,
+      "samples_with_1_period": 21,
+      "samples_without_period": 51
+    },
+    "test": {
+      "period_total": 16475,
+      "period_at_last_word": 698,
+      "period_inside_window": 15777,
+      "fraction_of_period_labels_at_final_word": 0.04236722306525038,
+      "samples_with_2_or_more_periods": 2263,
+      "samples_without_period": 10,
+      "samples_with_1_period": 16
+    }
+  },
+  "question_window_stats": {
+    "question_total": 5298,
+    "question_at_last_word": 146,
+    "fraction_of_question_labels_at_final_word": 0.027557568893922236,
+    "windows_with_question": 4195,
+    "windows_without_question": 41858,
+    "windows_with_multiple_question": 850,
+    "fraction_question_windows": 0.0910906998458298
+  },
+  "source_distribution_train": {
+    "v1_wiki": 40714,
+    "kurmanji_news": 2729,
+    "kurdish_ai_corpus": 2489,
+    "tatoeba": 121
+  },
+  "specialized_question_test_n": 800,
+  "allowed_sources": [
+    "kurdish_ai_corpus",
+    "kurmanji_news",
+    "tatoeba"
+  ],
+  "seed": 42,
+  "gates": {
+    "period_at_final_le_6pct": true,
+    "question_at_final_le_10pct": true,
+    "train_question_support_ge_3000": true,
+    "val_test_hash_match_v1": true
+  }
+}

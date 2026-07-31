@@ -1,0 +1,82 @@
+project:
+  seed: 42
+  output_dir: outputs/punctuation-xlm-r-base-v2-exp-01
+model:
+  name: FacebookAI/xlm-roberta-base
+  max_length: 256
+  num_labels: 5
+dataset:
+  sample_mode: continuous_word_windows
+  map_ellipsis_to_period: true
+  max_model_length: 256
+  min_words_per_window: 80
+  target_words_min: 110
+  target_words_max: 180
+  train_overlap_words: 8
+  val_overlap_words: 0
+  test_overlap_words: 0
+  ignore_left_edge_words: 2
+  ignore_right_edge_words: 4
+  processed_dir: data/processed
+  processed_v2_dir: data/processed_v2_question
+  seed: 42
+training:
+  precision: bf16
+  epochs: 3
+  train_batch_size: 8
+  eval_batch_size: 16
+  gradient_accumulation_steps: 4
+  learning_rate: 2.0e-05
+  weight_decay: 0.01
+  warmup_ratio: 0.06
+  max_grad_norm: 1.0
+  logging_steps: 50
+  evaluation_strategy: epoch
+  save_strategy: epoch
+  save_total_limit: 3
+  load_best_model_at_end: true
+  metric_for_best_model: punctuation_macro_f1
+  greater_is_better: true
+  dataloader_num_workers: 0
+  gradient_checkpointing: false
+loss:
+  use_class_weights: true
+  class_weight_method: inverse_sqrt
+  max_class_weight: 8.0
+early_stopping:
+  enabled: true
+  patience: 2
+evaluation:
+  window_validation: true
+  long_text_validation: true
+  long_text_validation_articles: 100
+  long_text_test_articles: 400
+  frozen_v1_model: models/punctuation/kurmanji-xlm-r-base-v1
+inference:
+  max_length: 256
+  overlap_words: 32
+  batch_size: 16
+  minimum_confidence:
+    COMMA: 0.55
+    PERIOD: 0.55
+    QUESTION: 0.6
+    EXCLAMATION: 0.7
+data:
+  additional_question_corpus: data/v2_question_processed/train_questions.jsonl
+  sampling_weight: 1.0
+paths:
+  raw_wikipedia_jsonl: data/raw/wikipedia.jsonl
+  processed_dir: data/processed_v2_question
+  best_model_dir: models/punctuation/kurmanji-xlm-r-base-v1
+  frozen_model_dir: models/punctuation/kurmanji-xlm-r-base-v1
+labels:
+- O
+- COMMA
+- PERIOD
+- QUESTION
+- EXCLAMATION
+experiment:
+  id: kurmanji-punctuation-v2-exp-01-real-q-weight-1
+  output_dir: outputs/punctuation-xlm-r-base-v2-exp-01
+  model_id: kurmanji-punctuation-xlm-r-base-v2.0-question-exp-01
+dataset_hash: 0eea499e0a4102c4fbedffba40634c18365f1e0c269c8b9fad41428a99093fd7

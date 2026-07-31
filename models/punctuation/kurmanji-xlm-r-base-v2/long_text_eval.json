@@ -1,0 +1,303 @@
+{
+  "model": "outputs\\punctuation-xlm-r-base-v2-exp-01\\best",
+  "n_articles": 400,
+  "apply_thresholds": true,
+  "label_counts_from_statistics": {
+    "train": {
+      "O": 4333840,
+      "COMMA": 239776,
+      "PERIOD": 291625,
+      "QUESTION": 907,
+      "EXCLAMATION": 11348
+    },
+    "validation": {
+      "O": 220040,
+      "COMMA": 11714,
+      "PERIOD": 14726,
+      "QUESTION": 41,
+      "EXCLAMATION": 840
+    },
+    "test": {
+      "O": 245882,
+      "COMMA": 13197,
+      "PERIOD": 16475,
+      "QUESTION": 67,
+      "EXCLAMATION": 593
+    }
+  },
+  "modes": {
+    "article": {
+      "n_chunks": 400,
+      "n_evaluated": 400,
+      "n_skipped": 0,
+      "n_words": 109335,
+      "text_preservation_rate": 1.0,
+      "metrics": {
+        "per_label": {
+          "COMMA": {
+            "precision": 0.5777063236870311,
+            "recall": 0.7930844215560051,
+            "f1": 0.6684753119913185,
+            "support": 5437.0
+          },
+          "PERIOD": {
+            "precision": 0.9227493023938904,
+            "recall": 0.9443859912821284,
+            "f1": 0.9334422819789036,
+            "support": 6653.0
+          },
+          "QUESTION": {
+            "precision": 0.625,
+            "recall": 0.78125,
+            "f1": 0.6944444444444444,
+            "support": 32.0
+          },
+          "EXCLAMATION": {
+            "precision": 0.7881040892193308,
+            "recall": 0.7598566308243727,
+            "f1": 0.7737226277372263,
+            "support": 279.0
+          }
+        },
+        "punctuation_macro_f1": 0.7675211665379732,
+        "punctuation_micro_f1": 0.8028758848163657,
+        "weighted_f1": 0.9567491043881098,
+        "accuracy": 0.9538757031142818,
+        "sentence_boundary_f1": 0.9302655872745348,
+        "confusion_matrix": [
+          [
+            93460,
+            3004,
+            415,
+            7,
+            48
+          ],
+          [
+            1027,
+            4312,
+            95,
+            0,
+            3
+          ],
+          [
+            228,
+            128,
+            6283,
+            8,
+            6
+          ],
+          [
+            6,
+            0,
+            1,
+            25,
+            0
+          ],
+          [
+            32,
+            20,
+            15,
+            0,
+            212
+          ]
+        ],
+        "labels": [
+          "O",
+          "COMMA",
+          "PERIOD",
+          "QUESTION",
+          "EXCLAMATION"
+        ],
+        "support": {
+          "COMMA": 5437,
+          "O": 96934,
+          "PERIOD": 6653,
+          "EXCLAMATION": 279,
+          "QUESTION": 32
+        }
+      },
+      "punctuation_macro_f1_long_text": 0.7675211665379732,
+      "sentence_boundary_f1": 0.9302655872745348,
+      "transitions": {
+        "QUESTION -> PERIOD": 1,
+        "QUESTION -> O": 6,
+        "EXCLAMATION -> PERIOD": 15,
+        "COMMA -> O": 1027,
+        "O -> COMMA": 3004,
+        "PERIOD -> O": 228,
+        "O -> PERIOD": 415,
+        "PERIOD -> COMMA": 128,
+        "COMMA -> PERIOD": 95
+      },
+      "transitions_top": {
+        "O -> COMMA": 3004,
+        "COMMA -> O": 1027,
+        "O -> PERIOD": 415,
+        "PERIOD -> O": 228,
+        "PERIOD -> COMMA": 128,
+        "COMMA -> PERIOD": 95,
+        "O -> EXCLAMATION": 48,
+        "EXCLAMATION -> O": 32,
+        "EXCLAMATION -> COMMA": 20,
+        "EXCLAMATION -> PERIOD": 15,
+        "PERIOD -> QUESTION": 8,
+        "O -> QUESTION": 7,
+        "QUESTION -> O": 6,
+        "PERIOD -> EXCLAMATION": 6,
+        "COMMA -> EXCLAMATION": 3,
+        "QUESTION -> PERIOD": 1
+      },
+      "label_support_gold": {
+        "COMMA": 5437,
+        "O": 96934,
+        "PERIOD": 6653,
+        "EXCLAMATION": 279,
+        "QUESTION": 32
+      },
+      "label_support_pred": {
+        "O": 94753,
+        "PERIOD": 6809,
+        "COMMA": 7464,
+        "EXCLAMATION": 269,
+        "QUESTION": 40
+      }
+    },
+    "multi_sentence_3_10": {
+      "n_chunks": 1308,
+      "n_evaluated": 1294,
+      "n_skipped": 14,
+      "n_words": 109419,
+      "text_preservation_rate": 1.0,
+      "metrics": {
+        "per_label": {
+          "COMMA": {
+            "precision": 0.5767830659296211,
+            "recall": 0.7869757174392936,
+            "f1": 0.6656811639305998,
+            "support": 5436.0
+          },
+          "PERIOD": {
+            "precision": 0.9216434336023478,
+            "recall": 0.9294169872743415,
+            "f1": 0.9255138878656155,
+            "support": 6758.0
+          },
+          "QUESTION": {
+            "precision": 0.5217391304347826,
+            "recall": 0.75,
+            "f1": 0.6153846153846153,
+            "support": 32.0
+          },
+          "EXCLAMATION": {
+            "precision": 0.7626262626262627,
+            "recall": 0.551094890510949,
+            "f1": 0.6398305084745765,
+            "support": 274.0
+          }
+        },
+        "punctuation_macro_f1": 0.7116025439138518,
+        "punctuation_micro_f1": 0.7958185053380784,
+        "weighted_f1": 0.9548958630132894,
+        "accuracy": 0.9521838071998464,
+        "sentence_boundary_f1": 0.9203427033916307,
+        "confusion_matrix": [
+          [
+            93453,
+            3003,
+            416,
+            10,
+            37
+          ],
+          [
+            1061,
+            4278,
+            94,
+            0,
+            3
+          ],
+          [
+            347,
+            112,
+            6281,
+            11,
+            7
+          ],
+          [
+            7,
+            0,
+            1,
+            24,
+            0
+          ],
+          [
+            75,
+            24,
+            23,
+            1,
+            151
+          ]
+        ],
+        "labels": [
+          "O",
+          "COMMA",
+          "PERIOD",
+          "QUESTION",
+          "EXCLAMATION"
+        ],
+        "support": {
+          "COMMA": 5436,
+          "O": 96919,
+          "PERIOD": 6758,
+          "EXCLAMATION": 274,
+          "QUESTION": 32
+        }
+      },
+      "punctuation_macro_f1_long_text": 0.7116025439138518,
+      "sentence_boundary_f1": 0.9203427033916307,
+      "transitions": {
+        "QUESTION -> PERIOD": 1,
+        "QUESTION -> O": 7,
+        "EXCLAMATION -> PERIOD": 23,
+        "COMMA -> O": 1061,
+        "O -> COMMA": 3003,
+        "PERIOD -> O": 347,
+        "O -> PERIOD": 416,
+        "PERIOD -> COMMA": 112,
+        "COMMA -> PERIOD": 94
+      },
+      "transitions_top": {
+        "O -> COMMA": 3003,
+        "COMMA -> O": 1061,
+        "O -> PERIOD": 416,
+        "PERIOD -> O": 347,
+        "PERIOD -> COMMA": 112,
+        "COMMA -> PERIOD": 94,
+        "EXCLAMATION -> O": 75,
+        "O -> EXCLAMATION": 37,
+        "EXCLAMATION -> COMMA": 24,
+        "EXCLAMATION -> PERIOD": 23,
+        "PERIOD -> QUESTION": 11,
+        "O -> QUESTION": 10,
+        "QUESTION -> O": 7,
+        "PERIOD -> EXCLAMATION": 7,
+        "COMMA -> EXCLAMATION": 3,
+        "EXCLAMATION -> QUESTION": 1,
+        "QUESTION -> PERIOD": 1
+      },
+      "label_support_gold": {
+        "COMMA": 5436,
+        "O": 96919,
+        "PERIOD": 6758,
+        "EXCLAMATION": 274,
+        "QUESTION": 32
+      },
+      "label_support_pred": {
+        "O": 94943,
+        "PERIOD": 6815,
+        "COMMA": 7417,
+        "EXCLAMATION": 198,
+        "QUESTION": 46
+      }
+    }
+  }
+}

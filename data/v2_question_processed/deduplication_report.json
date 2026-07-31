@@ -1,0 +1,8 @@
+{
+  "raw_records": 51773,
+  "exact_duplicates_removed": 1270,
+  "punctuation_only_duplicates_removed": 66,
+  "near_duplicates_removed": 444,
+  "accepted_records": 49277,
+  "rejected_records": 2496
+}

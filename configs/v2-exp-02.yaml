@@ -1,0 +1,23 @@
+# v2-exp-02: SAME corpus hash as exp-01; only sampling weight changes.
+extends: configs/v2-base-frozen.yaml
+
+experiment:
+  id: kurmanji-punctuation-v2-exp-02-real-q-weighted
+  output_dir: outputs/punctuation-xlm-r-base-v2-exp-02
+  model_id: kurmanji-punctuation-xlm-r-base-v2.0-question-exp-02
+
+project:
+  seed: 42
+  output_dir: outputs/punctuation-xlm-r-base-v2-exp-02
+
+dataset:
+  processed_v2_dir: data/processed_v2_question
+
+paths:
+  processed_dir: data/processed_v2_question
+
+data:
+  additional_question_corpus: data/v2_question_processed/train_questions.jsonl
+  sampling_weight: 2.0
+
+dataset_hash: "0eea499e0a4102c4fbedffba40634c18365f1e0c269c8b9fad41428a99093fd7"

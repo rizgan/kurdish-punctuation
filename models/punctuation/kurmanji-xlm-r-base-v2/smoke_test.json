@@ -1,0 +1,66 @@
+{
+  "model": "outputs\\punctuation-xlm-r-base-v2-exp-01\\best",
+  "n_cases": 8,
+  "n_failed": 2,
+  "all_passed": false,
+  "cases": [
+    {
+      "id": "comma_clause",
+      "input": "ez îro çûm bajarê lê baran dibariya",
+      "ok": false,
+      "output": "ez îro çûm bajarê lê baran dibariya.",
+      "text_preservation": true,
+      "error": "expected one of punctuation including ',', got 'ez îro çûm bajarê lê baran dibariya.'"
+    },
+    {
+      "id": "period_end",
+      "input": "li kurdistanê gelek çiyayên bilind hene",
+      "ok": true,
+      "output": "li kurdistanê gelek çiyayên bilind hene.",
+      "text_preservation": true
+    },
+    {
+      "id": "multi_sentence_words",
+      "input": "ez li amedê dijîm navê min azad e ew li hewlêrê dixebite",
+      "ok": true,
+      "output": "ez li amedê dijîm, navê min azad e, ew li hewlêrê dixebite.",
+      "text_preservation": true
+    },
+    {
+      "id": "questionish",
+      "input": "tu kengî hatî",
+      "ok": true,
+      "output": "tu kengî hatî?",
+      "text_preservation": true
+    },
+    {
+      "id": "kurmanji_diacritics",
+      "input": "çêşîû û çiyayên bilind li wir hene",
+      "ok": false,
+      "output": "çêşîû û çiyayên bilind li wir hene.",
+      "text_preservation": true,
+      "error": "'charmap' codec can't encode character '\\u015f' in position 29: character maps to <undefined>"
+    },
+    {
+      "id": "url_number_email",
+      "input": "binêre https://ku.wikipedia.org û name@example.com û 42",
+      "ok": true,
+      "output": "binêre https://ku.wikipedia.org û name@example.com û 42.",
+      "text_preservation": true
+    },
+    {
+      "id": "empty",
+      "input": "",
+      "ok": true,
+      "output": "",
+      "text_preservation": true
+    },
+    {
+      "id": "single_token",
+      "input": "were",
+      "ok": true,
+      "output": "were",
+      "text_preservation": true
+    }
+  ]
+}

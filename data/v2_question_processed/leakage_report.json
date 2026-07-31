@@ -1,0 +1,13 @@
+{
+  "checked_train_records": 3000,
+  "exact_leaks": 0,
+  "normalized_leaks": 0,
+  "lower_leaks": 0,
+  "nopunct_leaks": 0,
+  "near_leaks_removed": 0,
+  "long_sequence_leaks": 0,
+  "removed_record_ids": [],
+  "leak_details": [],
+  "clean_train_records": 3000,
+  "test_contamination": false
+}

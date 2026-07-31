@@ -1,0 +1,35 @@
+{
+  "mode": "assisted_heuristic",
+  "n_reviewed": 450,
+  "overall_accept_rate": 0.9933333333333333,
+  "by_source": {
+    "kurdish_ai_corpus": {
+      "n": 198,
+      "accepted": 195,
+      "accept_rate": 0.9848484848484849
+    },
+    "kurmanji_news": {
+      "n": 202,
+      "accepted": 202,
+      "accept_rate": 1.0
+    },
+    "tatoeba": {
+      "n": 50,
+      "accepted": 50,
+      "accept_rate": 1.0
+    }
+  },
+  "source_gate": {
+    "kurdish_ai_corpus": "PASS",
+    "kurmanji_news": "PASS",
+    "tatoeba": "PASS"
+  },
+  "allowed_train_sources": [
+    "kurdish_ai_corpus",
+    "kurmanji_news",
+    "tatoeba"
+  ],
+  "corpus_review_status": "Assisted review completed. A full independent human audit of the sampled records is pending.",
+  "manually_verified": false,
+  "note": "Do not write manually verified until human_audit_report.json gates pass."
+}

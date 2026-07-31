@@ -1,0 +1,51 @@
+{
+  "stage": 1,
+  "retrieved_at": "2026-07-31",
+  "gate": "PASS_WITH_NOTES",
+  "sources": {
+    "tatoeba": {
+      "status": "downloaded",
+      "total_sentences": 10451,
+      "question_candidates": 1107,
+      "target_after_filter": "500-2000",
+      "notes": "Short sentences; must not be used as standalone train windows."
+    },
+    "opensubtitles": {
+      "status": "rejected",
+      "reason": "OPUS OpenSubtitles has language code `ku` only, not `kmr`. Plan forbids using undifferentiated `ku`."
+    },
+    "kurmanji_news": {
+      "status": "downloaded",
+      "question_candidate_articles": 35666,
+      "target_after_filter": "1000-5000",
+      "license_note": "No clear redistribution license on dataset card; keep URLs; license check in manual review.",
+      "notes": "Prefer interviews/FAQ/quotes during filtering and manual review."
+    },
+    "kurdish_ai_corpus": {
+      "status": "downloaded_first_batch",
+      "kmr_rows_available": 478540,
+      "question_candidates_capped": 15000,
+      "license": "CC BY 4.0",
+      "notes": "Shards 0-1 are ckb-only (skipped). Soft-capped at 15000 for first quality batch."
+    },
+    "kurcorpus": {
+      "status": "deferred",
+      "reason": "Use only if A-D insufficient after filtering."
+    }
+  },
+  "files_created": [
+    "data/v2_question_raw/tatoeba/",
+    "data/v2_question_raw/opensubtitles/STATUS.md",
+    "data/v2_question_raw/kurmanji_news/questions_raw.jsonl",
+    "data/v2_question_raw/kurdish_ai_corpus/questions_raw.jsonl",
+    "data/v2_question_raw/manifests/",
+    "scripts/download_v2_question_sources.py",
+    "scripts/filter_v2_question_corpus.py",
+    "scripts/check_v2_leakage.py",
+    "scripts/run_v2_experiment.py",
+    "configs/v2-base-frozen.yaml",
+    "configs/v2-exp-01.yaml",
+    "configs/v2-exp-02.yaml"
+  ],
+  "next_step": "Stage 2 filter completion + Stage 3 manual review CSV"
+}

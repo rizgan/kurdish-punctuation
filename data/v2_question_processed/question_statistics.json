@@ -1,0 +1,43 @@
+{
+  "full_accepted": 49277,
+  "full_question_types": {
+    "YES_NO": 6141,
+    "MA": 851,
+    "WHO": 1856,
+    "WHAT": 9010,
+    "GELO": 3227,
+    "WHERE": 970,
+    "HOW_MANY": 942,
+    "WHY": 3481,
+    "MULTIPLE_QUESTION": 19260,
+    "HOW": 3185,
+    "WHEN": 354
+  },
+  "full_max_type_share": 0.3908517158106216,
+  "first_batch_size": 3000,
+  "first_batch_by_source": {
+    "kurdish_ai_corpus": 1400,
+    "kurmanji_news": 1400,
+    "tatoeba": 200
+  },
+  "first_batch_question_types": {
+    "MULTIPLE_QUESTION": 1194,
+    "YES_NO": 401,
+    "WHO": 119,
+    "WHY": 181,
+    "WHAT": 488,
+    "WHERE": 42,
+    "HOW_MANY": 63,
+    "GELO": 227,
+    "HOW": 210,
+    "MA": 58,
+    "WHEN": 17
+  },
+  "first_batch_max_type_share": 0.398,
+  "first_batch_needs_context_share": 0.05633333333333333,
+  "gate": {
+    "batch_in_2000_4000": true,
+    "type_share_le_40": true,
+    "needs_context_share_note": "Tatoeba short items marked needs_context; constructed contexts must stay <=20% after context building"
+  }
+}

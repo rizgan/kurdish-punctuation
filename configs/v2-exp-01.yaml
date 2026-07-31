@@ -1,0 +1,24 @@
+# v2-exp-01: new real question corpus, sampling weight 1.0
+# Allowed diffs vs v2-base-frozen: experiment.id, output_dir,
+# additional_question_corpus, sampling_weight, dataset_hash, model_id.
+
+extends: configs/v2-base-frozen.yaml
+
+experiment:
+  id: kurmanji-punctuation-v2-exp-01-real-q-weight-1
+  output_dir: outputs/punctuation-xlm-r-base-v2-exp-01
+  model_id: kurmanji-punctuation-xlm-r-base-v2.0-question-exp-01
+
+project:
+  seed: 42
+  output_dir: outputs/punctuation-xlm-r-base-v2-exp-01
+
+dataset:
+  processed_v2_dir: data/processed_v2_question
+
+paths:
+  processed_dir: data/processed_v2_question
+
+data:
+  additional_question_corpus: data/v2_question_processed/train_questions.jsonl
+  sampling_weight: 1.0

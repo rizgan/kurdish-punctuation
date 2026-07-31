@@ -1,0 +1,22 @@
+{
+  "raw_by_source": {
+    "tatoeba": 1107,
+    "kurmanji_news": 35666,
+    "kurdish_ai_corpus": 15000
+  },
+  "accepted_by_source": {
+    "tatoeba": 694,
+    "kurmanji_news": 34747,
+    "kurdish_ai_corpus": 13836
+  },
+  "rejected_reasons": {
+    "too_short": 411,
+    "near_duplicate": 444,
+    "question_mark_only_in_url": 206,
+    "triple_question_marks": 74,
+    "exact_duplicate": 1270,
+    "arabic_script": 22,
+    "punctuation_only_duplicate": 66,
+    "low_latin_ratio": 3
+  }
+}

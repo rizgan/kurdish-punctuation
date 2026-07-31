@@ -1,0 +1,625 @@
+{
+  "articles_sampled": 500,
+  "articles_labeled": 500,
+  "articles_skipped": 0,
+  "approx_words": 27781,
+  "label_counts": {
+    "IGNORE": 8758,
+    "TITLE": 4354,
+    "KEEP": 23319,
+    "UPPER": 108
+  },
+  "title_share_of_trainable": 0.15672581980490263,
+  "upper_share_of_trainable": 0.00388754904431086,
+  "frequent_title_tokens": [
+    {
+      "token": "fransayê",
+      "count": 155
+    },
+    {
+      "token": "îranê",
+      "count": 63
+    },
+    {
+      "token": "kurdistanê",
+      "count": 58
+    },
+    {
+      "token": "almanyayê",
+      "count": 56
+    },
+    {
+      "token": "landkreis",
+      "count": 44
+    },
+    {
+      "token": "îtalyayê",
+      "count": 41
+    },
+    {
+      "token": "azerbaycana",
+      "count": 33
+    },
+    {
+      "token": "grand",
+      "count": 26
+    },
+    {
+      "token": "rûsyayê",
+      "count": 24
+    },
+    {
+      "token": "estê",
+      "count": 23
+    },
+    {
+      "token": "kurdistan",
+      "count": 23
+    },
+    {
+      "token": "rojhilat",
+      "count": 21
+    },
+    {
+      "token": "başûrê",
+      "count": 18
+    },
+    {
+      "token": "şerê",
+      "count": 16
+    },
+    {
+      "token": "xan",
+      "count": 16
+    },
+    {
+      "token": "sovyetê",
+      "count": 15
+    },
+    {
+      "token": "bavyera",
+      "count": 14
+    },
+    {
+      "token": "rojava",
+      "count": 14
+    },
+    {
+      "token": "baba",
+      "count": 14
+    },
+    {
+      "token": "navenda",
+      "count": 13
+    },
+    {
+      "token": "komara",
+      "count": 13
+    },
+    {
+      "token": "kurd",
+      "count": 13
+    },
+    {
+      "token": "îngilîstanê",
+      "count": 12
+    },
+    {
+      "token": "osman",
+      "count": 12
+    },
+    {
+      "token": "the",
+      "count": 12
+    },
+    {
+      "token": "di",
+      "count": 11
+    },
+    {
+      "token": "amara",
+      "count": 11
+    },
+    {
+      "token": "jaff",
+      "count": 11
+    },
+    {
+      "token": "tahir",
+      "count": 10
+    },
+    {
+      "token": "batman",
+      "count": 10
+    }
+  ],
+  "sample_TITLE": [
+    {
+      "article_id": "wiki_021008",
+      "input": "di",
+      "original": "Di",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_057986",
+      "input": "bora",
+      "original": "Bora",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "source",
+      "original": "Source",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_048335",
+      "input": "loireta",
+      "original": "Loireta",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "ebûbekir",
+      "original": "Ebûbekir",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_007981",
+      "input": "notron",
+      "original": "Notron",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_034964",
+      "input": "îranê",
+      "original": "Îranê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_068095",
+      "input": "estê",
+      "original": "Estê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_057986",
+      "input": "kool",
+      "original": "Kool",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_057986",
+      "input": "optik",
+      "original": "Optik",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_089333",
+      "input": "îngilîstanê",
+      "original": "Îngilîstanê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_015372",
+      "input": "tirkiyeyê",
+      "original": "Tirkiyeyê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "lands",
+      "original": "Lands",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_034581",
+      "input": "îranê",
+      "original": "Îranê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_044817",
+      "input": "almanyayê",
+      "original": "Almanyayê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_050691",
+      "input": "oisaê",
+      "original": "Oisaê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_057986",
+      "input": "fresh",
+      "original": "Fresh",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_057986",
+      "input": "zara",
+      "original": "Zara",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_041703",
+      "input": "nürnberger",
+      "original": "Nürnberger",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "society",
+      "original": "Society",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "book",
+      "original": "Book",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "arab",
+      "original": "Arab",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "norman",
+      "original": "Norman",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_044510",
+      "input": "almanyayê",
+      "original": "Almanyayê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_050691",
+      "input": "fransayê",
+      "original": "Fransayê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "mekeyê",
+      "original": "Mekeyê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "osman",
+      "original": "Osman",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_041703",
+      "input": "land",
+      "original": "Land",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_057986",
+      "input": "savas",
+      "original": "Savas",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_005775",
+      "input": "tirk",
+      "original": "Tirk",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_034581",
+      "input": "rojhilat",
+      "original": "Rojhilat",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_057986",
+      "input": "ekrem",
+      "original": "Ekrem",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_015372",
+      "input": "zerde",
+      "original": "Zerde",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_057986",
+      "input": "savas",
+      "original": "Savas",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_068095",
+      "input": "fransayê",
+      "original": "Fransayê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "muhemmed",
+      "original": "Muhemmed",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_089333",
+      "input": "berkshire",
+      "original": "Berkshire",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_007981",
+      "input": "dihok",
+      "original": "Dihok",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_088351",
+      "input": "bretanyayê",
+      "original": "Bretanyayê",
+      "label": "TITLE"
+    },
+    {
+      "article_id": "wiki_021000",
+      "input": "nexşeya",
+      "original": "Nexşeya",
+      "label": "TITLE"
+    }
+  ],
+  "sample_UPPER": [
+    {
+      "article_id": "wiki_021724",
+      "input": "cia",
+      "original": "CIA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048861",
+      "input": "fsh",
+      "original": "FSH",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048721",
+      "input": "ma",
+      "original": "MA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_025714",
+      "input": "ny",
+      "original": "NY",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_029670",
+      "input": "xy",
+      "original": "XY",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_004738",
+      "input": "om",
+      "original": "OM",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048721",
+      "input": "ii",
+      "original": "II",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_026293",
+      "input": "ny",
+      "original": "NY",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_024494",
+      "input": "heart",
+      "original": "HEART",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_026001",
+      "input": "gcie",
+      "original": "GCIE",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_009214",
+      "input": "dya",
+      "original": "DYA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_004738",
+      "input": "frs",
+      "original": "FRS",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_022666",
+      "input": "bedlisi",
+      "original": "BEDLISI",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_026001",
+      "input": "pc",
+      "original": "PC",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_022445",
+      "input": "jtc",
+      "original": "JTC",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048721",
+      "input": "ii",
+      "original": "II",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048861",
+      "input": "ny",
+      "original": "NY",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_009434",
+      "input": "mossad",
+      "original": "MOSSAD",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_024494",
+      "input": "ancyclopædia",
+      "original": "ANCYCLOPÆDIA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048861",
+      "input": "ca",
+      "original": "CA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048861",
+      "input": "fsh",
+      "original": "FSH",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_029670",
+      "input": "ep",
+      "original": "EP",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_024494",
+      "input": "ab",
+      "original": "AB",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_055539",
+      "input": "dya",
+      "original": "DYA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048721",
+      "input": "adn",
+      "original": "ADN",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048721",
+      "input": "dna",
+      "original": "DNA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_026293",
+      "input": "nj",
+      "original": "NJ",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048861",
+      "input": "fsh",
+      "original": "FSH",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048721",
+      "input": "ny",
+      "original": "NY",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_024494",
+      "input": "abo",
+      "original": "ABO",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048721",
+      "input": "ii",
+      "original": "II",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048861",
+      "input": "lh",
+      "original": "LH",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_009214",
+      "input": "dya",
+      "original": "DYA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_018465",
+      "input": "dna",
+      "original": "DNA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048721",
+      "input": "ma",
+      "original": "MA",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_048861",
+      "input": "fsh",
+      "original": "FSH",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_026001",
+      "input": "gcsi",
+      "original": "GCSI",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_005553",
+      "input": "ngo",
+      "original": "NGO",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_057422",
+      "input": "bz",
+      "original": "BZ",
+      "label": "UPPER"
+    },
+    {
+      "article_id": "wiki_020239",
+      "input": "dya",
+      "original": "DYA",
+      "label": "UPPER"
+    }
+  ],
+  "notes": [
+    "Review sample_TITLE/UPPER for wiki headers, link titles, and editorial caps.",
+    "frequent_title_tokens with high count may indicate systematic noise.",
+    "Sentence starts are IGNORE — model should learn names, not sentence case."
+  ]
+}

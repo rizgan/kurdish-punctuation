@@ -1,0 +1,261 @@
+{
+  "n_contexts": 800,
+  "n_evaluated": 800,
+  "text_preservation": 1.0,
+  "metrics": {
+    "per_label": {
+      "COMMA": {
+        "precision": 0.4678909678909679,
+        "recall": 0.7291216702663786,
+        "f1": 0.5700014070634586,
+        "support": 5556.0
+      },
+      "PERIOD": {
+        "precision": 0.8514043455219926,
+        "recall": 0.9550588515039828,
+        "f1": 0.9002577608427659,
+        "support": 8411.0
+      },
+      "QUESTION": {
+        "precision": 0.757123473541384,
+        "recall": 0.6402753872633391,
+        "f1": 0.6938141125271993,
+        "support": 1743.0
+      },
+      "EXCLAMATION": {
+        "precision": 0.18875502008032127,
+        "recall": 0.27976190476190477,
+        "f1": 0.22541966426858512,
+        "support": 168.0
+      }
+    },
+    "punctuation_macro_f1": 0.5973732361755022,
+    "punctuation_micro_f1": 0.7422536000448254,
+    "weighted_f1": 0.9518975157524231,
+    "accuracy": 0.9478654035433071,
+    "sentence_boundary_f1": 0.9006517690875234,
+    "confusion_matrix": [
+      [
+        140838,
+        4503,
+        1077,
+        160,
+        104
+      ],
+      [
+        1361,
+        4051,
+        110,
+        18,
+        16
+      ],
+      [
+        97,
+        57,
+        8033,
+        161,
+        63
+      ],
+      [
+        438,
+        37,
+        133,
+        1116,
+        19
+      ],
+      [
+        10,
+        10,
+        82,
+        19,
+        47
+      ]
+    ],
+    "labels": [
+      "O",
+      "COMMA",
+      "PERIOD",
+      "QUESTION",
+      "EXCLAMATION"
+    ],
+    "support": {
+      "O": 146682,
+      "PERIOD": 8411,
+      "COMMA": 5556,
+      "QUESTION": 1743,
+      "EXCLAMATION": 168
+    }
+  },
+  "by_source": {
+    "kurdish_ai_corpus": {
+      "per_label": {
+        "COMMA": {
+          "precision": 0.499890996293874,
+          "recall": 0.7368251928020566,
+          "f1": 0.595661774256397,
+          "support": 3112.0
+        },
+        "PERIOD": {
+          "precision": 0.8374205267938238,
+          "recall": 0.9424993611040122,
+          "f1": 0.886858242154623,
+          "support": 3913.0
+        },
+        "QUESTION": {
+          "precision": 0.763046544428773,
+          "recall": 0.49770009199632015,
+          "f1": 0.6024498886414253,
+          "support": 1087.0
+        },
+        "EXCLAMATION": {
+          "precision": 0.2268041237113402,
+          "recall": 0.34375,
+          "f1": 0.2732919254658385,
+          "support": 128.0
+        }
+      },
+      "punctuation_macro_f1": 0.589565457629571,
+      "punctuation_micro_f1": 0.724164552773795,
+      "weighted_f1": 0.9460912694967664,
+      "accuracy": 0.9429337225836489,
+      "sentence_boundary_f1": 0.8764734068040249,
+      "confusion_matrix": [
+        [
+          68368,
+          2210,
+          518,
+          65,
+          68
+        ],
+        [
+          736,
+          2293,
+          62,
+          8,
+          13
+        ],
+        [
+          49,
+          43,
+          3688,
+          82,
+          51
+        ],
+        [
+          416,
+          32,
+          80,
+          541,
+          18
+        ],
+        [
+          6,
+          9,
+          56,
+          13,
+          44
+        ]
+      ],
+      "labels": [
+        "O",
+        "COMMA",
+        "PERIOD",
+        "QUESTION",
+        "EXCLAMATION"
+      ],
+      "support": {
+        "O": 71229,
+        "PERIOD": 3913,
+        "COMMA": 3112,
+        "QUESTION": 1087,
+        "EXCLAMATION": 128
+      }
+    },
+    "kurmanji_news": {
+      "per_label": {
+        "COMMA": {
+          "precision": 0.4318349299926308,
+          "recall": 0.7193126022913257,
+          "f1": 0.5396776669224866,
+          "support": 2444.0
+        },
+        "PERIOD": {
+          "precision": 0.8636453985291195,
+          "recall": 0.9659848821698532,
+          "f1": 0.9119529856228354,
+          "support": 4498.0
+        },
+        "QUESTION": {
+          "precision": 0.7516339869281046,
+          "recall": 0.8765243902439024,
+          "f1": 0.809289232934553,
+          "support": 656.0
+        },
+        "EXCLAMATION": {
+          "precision": 0.05454545454545454,
+          "recall": 0.075,
+          "f1": 0.0631578947368421,
+          "support": 40.0
+        }
+      },
+      "punctuation_macro_f1": 0.5810194450541794,
+      "punctuation_micro_f1": 0.7609339407744875,
+      "weighted_f1": 0.957240430317367,
+      "accuracy": 0.9525821087723099,
+      "sentence_boundary_f1": 0.9234947940244455,
+      "confusion_matrix": [
+        [
+          72470,
+          2293,
+          559,
+          95,
+          36
+        ],
+        [
+          625,
+          1758,
+          48,
+          10,
+          3
+        ],
+        [
+          48,
+          14,
+          4345,
+          79,
+          12
+        ],
+        [
+          22,
+          5,
+          53,
+          575,
+          1
+        ],
+        [
+          4,
+          1,
+          26,
+          6,
+          3
+        ]
+      ],
+      "labels": [
+        "O",
+        "COMMA",
+        "PERIOD",
+        "QUESTION",
+        "EXCLAMATION"
+      ],
+      "support": {
+        "O": 75453,
+        "QUESTION": 656,
+        "COMMA": 2444,
+        "EXCLAMATION": 40,
+        "PERIOD": 4498
+      }
+    }
+  },
+  "question_support_gold": 1743,
+  "question_support_pred": 1474
+}

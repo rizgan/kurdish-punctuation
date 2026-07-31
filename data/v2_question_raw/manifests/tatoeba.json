@@ -1,0 +1,30 @@
+{
+  "source": "tatoeba",
+  "language": "Northern Kurdish (kmr)",
+  "retrieved_at": "2026-07-31",
+  "urls": {
+    "sentences_detailed": "https://downloads.tatoeba.org/exports/per_language/kmr/kmr_sentences_detailed.tsv.bz2",
+    "sentences": "https://downloads.tatoeba.org/exports/per_language/kmr/kmr_sentences.tsv.bz2"
+  },
+  "files": {
+    "kmr_sentences_detailed.tsv.bz2": {
+      "path": "data\\v2_question_raw\\tatoeba\\kmr_sentences_detailed.tsv.bz2",
+      "sha256": "856c8fe0cea274437bd468ce34fe21142d42a630923f90ac8b7fc75b8af234d4",
+      "bytes": 173023
+    },
+    "kmr_sentences.tsv.bz2": {
+      "path": "data\\v2_question_raw\\tatoeba\\kmr_sentences.tsv.bz2",
+      "sha256": "6eeda3356f88c9dfe97a60e8b7945d3e1976b3a2df717f81d6563dd82844d102",
+      "bytes": 112308
+    },
+    "questions_raw.jsonl": {
+      "path": "data\\v2_question_raw\\tatoeba\\questions_raw.jsonl",
+      "sha256": "f369f826ffdc3f509b7c18b2c70526457a8dff1a005e22e0d27d9e62c39e60a6",
+      "bytes": 497311
+    }
+  },
+  "total_sentences": 10451,
+  "question_candidate_sentences": 1107,
+  "note": "Tatoeba sentences are short. Do not use as standalone train windows; group by author/links or attach real context. Preserve sentence ID, author, license.",
+  "status": "downloaded"
+}

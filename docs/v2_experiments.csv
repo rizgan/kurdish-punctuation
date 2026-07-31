@@ -1,4 +1,4 @@
-run,question_corpus_note,sampling_weight,train_question_support,question_precision,question_recall,question_f1,period_f1,comma_f1,boundary_f1,preservation,q_to_period,q_to_o,o_to_question,gate,notes
-v1-baseline,wiki only,1.0,907,0.56,0.69,0.62,0.93,0.66,0.93,1.0,1,9,6,baseline,"long-text 400 articles; gold Q support=32"
-v2-exp-01,real questions inside multi-sentence context; no sampling change,1.0,,,,,,,,,,"isolates corpus effect"
-v2-exp-02,same corpus as v2-exp-01,2.5,,,,,,,,,,"moderate question-window weight 2.0-3.0; isolates oversampling"
+run_id,git_commit,dataset_hash,new_question_count,train_question_support,question_window_weight,effective_question_window_ratio,QUESTION_precision,QUESTION_recall,QUESTION_F1,QUESTION_to_PERIOD,QUESTION_to_O,O_to_QUESTION,PERIOD_F1,COMMA_F1,EXCLAMATION_F1,macro_F1,sentence_boundary_F1,text_preservation,specialized_question_F1,gate,notes
+v1-baseline,,5f8fa6844f1d2069eeb393ab942b1f93f898773b35097450adf04b25f028c0d7,0,907,1.0,,0.56,0.69,0.62,1,9,6,0.93,0.66,0.75,0.74,0.93,1.0,,baseline,long-text 400 article mode
+v2-exp-01,,0eea499e0a4102c4fbedffba40634c18365f1e0c269c8b9fad41428a99093fd7,3000,5298,1.0,0.091,0.625,0.781,0.694,1,6,7,0.933,0.669,0.774,0.768,0.930,1.0,0.694,STRONG_PASS,selected for freeze
+v2-exp-02,,0eea499e0a4102c4fbedffba40634c18365f1e0c269c8b9fad41428a99093fd7,3000,5298,2.0,0.167,0.610,0.781,0.685,1,6,7,0.933,0.659,0.729,0.751,0.930,1.0,0.694,STRONG_PASS,same recall lower precision than exp-01
