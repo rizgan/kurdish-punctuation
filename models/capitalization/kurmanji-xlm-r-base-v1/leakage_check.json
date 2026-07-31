@@ -1,0 +1,35 @@
+{
+  "article_id_overlaps": {
+    "train_x_validation": 0,
+    "train_x_test": 0,
+    "validation_x_test": 0
+  },
+  "exact_text_hash_overlaps": {
+    "train_x_validation": 0,
+    "train_x_test": 0,
+    "validation_x_test": 0
+  },
+  "article_split_ok": true,
+  "trainable_tokens_checked": 734118,
+  "trainable_not_lower": 0,
+  "input_casing_ok": true,
+  "sentence_start_after_punct_ok": 45276,
+  "sentence_start_after_punct_bad": 1020,
+  "sentence_starts_labeled_ignore": false,
+  "label_counts_sample": {
+    "IGNORE": 172974,
+    "KEEP": 638595,
+    "TITLE": 92922,
+    "UPPER": 2601
+  },
+  "title_vocab": {
+    "train_unique": 109499,
+    "test_unique": 13243,
+    "shared_unique": 9077,
+    "test_title_tokens": 35385,
+    "shared_title_token_mass": 30141,
+    "shared_mass_fraction": 0.851801610852056,
+    "note": "High shared TITLE mass is expected for common geo names; use unseen-name probe."
+  },
+  "examples_bad_case": []
+}

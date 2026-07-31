@@ -116,18 +116,37 @@ class CapitalizationRestorer:
         counts = np.maximum(counts, 1.0)
         return (acc / counts[:, None]).astype(np.float32)
 
-    def predict_tokens(self, punctuated_text: str) -> list[dict[str, Any]]:
-        text = normalize_for_inference(punctuated_text)
-        if not text:
-            return []
+    def decode_probs(
+        self,
+        probs: np.ndarray,
+        *,
+        sentence_start: bool = False,
+        protected: bool = False,
+        title_threshold: float | None = None,
+        upper_threshold: float | None = None,
+    ) -> tuple[str, float]:
+        """Map a probability vector to (label, confidence) with thresholds."""
+        t_thr = self.title_threshold if title_threshold is None else float(title_threshold)
+        u_thr = self.upper_threshold if upper_threshold is None else float(upper_threshold)
+        if protected:
+            return "KEEP", 1.0
+        pred_id = int(np.argmax(probs))
+        label = ID2LABEL[pred_id]
+        conf = float(probs[pred_id])
+        if sentence_start:
+            if label == "UPPER" and conf >= u_thr:
+                return "UPPER", conf
+            return "KEEP", float(probs[LABEL2ID["KEEP"]])
+        if label == "TITLE" and conf >= t_thr:
+            return "TITLE", conf
+        if label == "UPPER" and conf >= u_thr:
+            return "UPPER", conf
+        return "KEEP", float(probs[LABEL2ID["KEEP"]])
 
-        # Lower then sentence rule — same format as training input.
-        lowered = kurmanji_lower(text)
-        after_rule = capitalize_sentence_starts(lowered, self.sentence_cfg)
-        tokens = tokenize_words_and_punct(after_rule)
+    def score_tokens(self, tokens: list[str]) -> list[dict[str, Any]]:
+        """Score already-prepared model-input tokens (after lower + sentence rule)."""
         starts = sentence_start_word_indices(tokens, self.sentence_cfg)
         logits = self._aggregate_logits(tokens) if tokens else np.zeros((0, len(LABELS)))
-
         results: list[dict[str, Any]] = []
         for i, tok in enumerate(tokens):
             protected = (
@@ -139,64 +158,39 @@ class CapitalizationRestorer:
             )
             sentence_start = i in starts
             if protected:
-                results.append(
-                    {
-                        "token_before": tok,
-                        "token_after_rule": tok,
-                        "predicted_label": "KEEP",
-                        "confidence": 1.0,
-                        "token_after": tok,
-                        "protected": True,
-                        "sentence_start": sentence_start,
-                    }
-                )
-                continue
-
-            probs = _softmax(logits[i])
-            pred_id = int(np.argmax(probs))
-            label = ID2LABEL[pred_id]
-            conf = float(probs[pred_id])
-
-            # Sentence-start: keep rule capitalization unless UPPER with high confidence.
-            if sentence_start:
-                if label == "UPPER" and conf >= self.upper_threshold:
-                    out_tok = apply_case_label(tok, "UPPER")
-                    final_label = "UPPER"
-                else:
-                    out_tok = tok  # already title-cased by rule
-                    final_label = "KEEP"
-                    conf = float(probs[LABEL2ID["KEEP"]])
-                results.append(
-                    {
-                        "token_before": tok,
-                        "token_after_rule": tok,
-                        "predicted_label": final_label,
-                        "confidence": conf,
-                        "token_after": out_tok,
-                        "protected": False,
-                        "sentence_start": True,
-                    }
-                )
-                continue
-
-            final_label = "KEEP"
-            if label == "TITLE" and conf >= self.title_threshold:
-                final_label = "TITLE"
-            elif label == "UPPER" and conf >= self.upper_threshold:
-                final_label = "UPPER"
-            out_tok = apply_case_label(tok, final_label)
+                probs = np.zeros(len(LABELS), dtype=np.float32)
+                probs[LABEL2ID["KEEP"]] = 1.0
+            else:
+                probs = _softmax(logits[i])
+            label, conf = self.decode_probs(
+                probs, sentence_start=sentence_start, protected=protected
+            )
+            if protected or (sentence_start and label == "KEEP"):
+                out_tok = tok
+            else:
+                out_tok = apply_case_label(tok, label)
             results.append(
                 {
                     "token_before": tok,
                     "token_after_rule": tok,
-                    "predicted_label": final_label,
-                    "confidence": conf if final_label != "KEEP" else float(probs[LABEL2ID["KEEP"]]),
+                    "predicted_label": label,
+                    "confidence": conf,
+                    "probs": {lab: float(probs[LABEL2ID[lab]]) for lab in LABELS},
                     "token_after": out_tok,
-                    "protected": False,
-                    "sentence_start": False,
+                    "protected": protected,
+                    "sentence_start": sentence_start,
                 }
             )
         return results
+
+    def predict_tokens(self, punctuated_text: str) -> list[dict[str, Any]]:
+        text = normalize_for_inference(punctuated_text)
+        if not text:
+            return []
+        lowered = kurmanji_lower(text)
+        after_rule = capitalize_sentence_starts(lowered, self.sentence_cfg)
+        tokens = tokenize_words_and_punct(after_rule)
+        return self.score_tokens(tokens)
 
     def restore(self, punctuated_text: str) -> str:
         text = normalize_for_inference(punctuated_text)
@@ -204,7 +198,7 @@ class CapitalizationRestorer:
             return text
         lowered = kurmanji_lower(text)
         after_rule = capitalize_sentence_starts(lowered, self.sentence_cfg)
-        preds = self.predict_tokens(text)
+        preds = self.score_tokens(tokenize_words_and_punct(after_rule))
         new_tokens = [p["token_after"] for p in preds]
         out = reconstruct_with_spacing(after_rule, new_tokens)
         assert_case_only(after_rule, out)

@@ -1,0 +1,54 @@
+{
+  "capitalization_macro_f1": 0.8888495611057554,
+  "capitalization_micro_f1": 0.8841256923844276,
+  "capitalization_micro_precision": 0.8452079202951289,
+  "capitalization_micro_recall": 0.9268004072759295,
+  "weighted_f1": 0.9656448138136656,
+  "accuracy": 0.9649706513036936,
+  "proper_name_f1": 0.8838669685209142,
+  "proper_name_precision": 0.8447312160317337,
+  "proper_name_recall": 0.9268051434223541,
+  "acronym_f1": 0.8938321536905967,
+  "per_label": {
+    "KEEP": {
+      "precision": 0.9878351444067537,
+      "recall": 0.971506521411339,
+      "f1": 0.9796027937473274,
+      "support": 212224.0
+    },
+    "TITLE": {
+      "precision": 0.8447312160317337,
+      "recall": 0.9268051434223541,
+      "f1": 0.8838669685209142,
+      "support": 35385.0
+    },
+    "UPPER": {
+      "precision": 0.86328125,
+      "recall": 0.9266247379454927,
+      "f1": 0.8938321536905967,
+      "support": 954.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      206177,
+      5965,
+      82
+    ],
+    [
+      2532,
+      32795,
+      58
+    ],
+    [
+      7,
+      63,
+      884
+    ]
+  ],
+  "labels": [
+    "KEEP",
+    "TITLE",
+    "UPPER"
+  ]
+}

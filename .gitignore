@@ -31,8 +31,16 @@ data/processed_capitalization_diagnostic/*
 data/test_question_specialized/*
 !data/test_question_specialized/.gitkeep
 data/asr_benchmark_v1/*
-!data/asr_benchmark_v1/.gitkeep
 !data/asr_benchmark_v1/README.md
+!data/asr_benchmark_v1/metadata.csv
+!data/asr_benchmark_v1/asr_raw.jsonl
+!data/asr_benchmark_v1/punctuation_gold.jsonl
+!data/asr_benchmark_v1/audio/
+data/asr_benchmark_v1/audio/**
+!data/asr_benchmark_v1/audio/.gitkeep
+data/test_capitalization_specialized/*
+!data/test_capitalization_specialized/README.md
+!data/test_capitalization_specialized/cases.jsonl
 checkpoints/*
 !checkpoints/.gitkeep
 outputs/

@@ -1,15 +1,36 @@
-# Kurmanji punctuation restoration
+# Kurmanji punctuation + capitalization restoration
 
-Token-classification model that inserts `, . ? !` into **Kurmanji Latin** (`kmr_Latn`) text **without changing words, case, or spelling**.
-
-Base model: [`FacebookAI/xlm-roberta-base`](https://huggingface.co/FacebookAI/xlm-roberta-base).
+Production pipeline for **Kurmanji Latin** (`kmr_Latn`):
 
 ```text
-ez îro çûm bajarê lê baran dibariya
-→ ez îro çûm bajarê, lê baran dibariya.
+raw / ASR text
+→ punctuation v2
+→ sentence-start rule
+→ capitalization v1
 ```
 
-## Results — v1.0 (`kurmanji-punctuation-xlm-r-base-v1.0`)
+Models do **not** change words, spelling, or Kurmanji letters — only insert `, . ? !` and adjust case.
+
+```powershell
+python restore_text.py `
+  --punctuation-model models/punctuation/kurmanji-xlm-r-base-v2 `
+  --capitalization-model models/capitalization/kurmanji-xlm-r-base-v1 `
+  --text "ez li amedê dijîm navê min azad e tu li ku dijî"
+```
+
+```text
+Ez li Amedê dijîm. Navê min Azad e. Tu li ku dijî?
+```
+
+Modes: `--full` (default), `--punctuation-only`, `--capitalization-only`, `--json-output`.
+
+| Component | Status | Path |
+|-----------|--------|------|
+| Punctuation v2 | Frozen, STRONG_PASS | `models/punctuation/kurmanji-xlm-r-base-v2` |
+| Capitalization v1 | Frozen, long-text gate PASS | `models/capitalization/kurmanji-xlm-r-base-v1` |
+| ASR benchmark | Scaffold (fill clips next) | `data/asr_benchmark_v1/` |
+
+## Results — punctuation v1.0 (`kurmanji-punctuation-xlm-r-base-v1.0`)
 
 Frozen path: [`models/punctuation/kurmanji-xlm-r-base-v1`](models/punctuation/kurmanji-xlm-r-base-v1) · details in [`model_card.md`](models/punctuation/kurmanji-xlm-r-base-v1/model_card.md)
 

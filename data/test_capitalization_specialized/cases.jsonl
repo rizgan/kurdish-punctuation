@@ -1,0 +1,28 @@
+{"id": "person_01", "category": "person", "tokens": ["navê", "min", "azad", "e", "."], "labels": ["IGNORE", "KEEP", "TITLE", "KEEP", "IGNORE"], "note": "Azad as personal name"}
+{"id": "person_02", "category": "unknown_name", "tokens": ["hevalê", "min", "dilşad", "e", "."], "labels": ["IGNORE", "KEEP", "TITLE", "KEEP", "IGNORE"], "note": "rare personal name Dilşad"}
+{"id": "person_03", "category": "unknown_name", "tokens": ["jinê", "bi", "navê", "berivan", "hat", "."], "labels": ["IGNORE", "KEEP", "KEEP", "TITLE", "KEEP", "IGNORE"], "note": "Berivan"}
+{"id": "person_04", "category": "unknown_name", "tokens": ["xwendekar", "ciwan", "çû", "malê", "."], "labels": ["IGNORE", "TITLE", "KEEP", "KEEP", "IGNORE"], "note": "Ciwan as name"}
+{"id": "person_05", "category": "unknown_name", "tokens": ["mamoste", "ruken", "got", "."], "labels": ["IGNORE", "TITLE", "KEEP", "IGNORE"], "note": "Ruken"}
+{"id": "place_01", "category": "place", "tokens": ["ez", "li", "amedê", "dijîm", "."], "labels": ["IGNORE", "KEEP", "TITLE", "KEEP", "IGNORE"], "note": "Amedê city"}
+{"id": "place_02", "category": "place", "tokens": ["ew", "li", "rojava", "dijî", "."], "labels": ["IGNORE", "KEEP", "TITLE", "KEEP", "IGNORE"], "note": "Rojava region"}
+{"id": "place_03", "category": "place", "tokens": ["li", "kurdistanê", "dijîn", "."], "labels": ["KEEP", "TITLE", "KEEP", "IGNORE"], "note": "Kurdistanê"}
+{"id": "place_04", "category": "unknown_name", "tokens": ["gundê", "zînê", "nêzîk", "e", "."], "labels": ["IGNORE", "TITLE", "KEEP", "KEEP", "IGNORE"], "note": "rare toponym Zînê"}
+{"id": "place_05", "category": "unknown_name", "tokens": ["çemê", "feratê", "dirêj", "e", "."], "labels": ["IGNORE", "TITLE", "KEEP", "KEEP", "IGNORE"], "note": "Feratê river"}
+{"id": "org_01", "category": "organization", "tokens": ["ew", "ji", "un", "tê", "."], "labels": ["IGNORE", "KEEP", "UPPER", "KEEP", "IGNORE"], "note": "UN acronym"}
+{"id": "org_02", "category": "organization", "tokens": ["endamê", "nato", "ye", "."], "labels": ["IGNORE", "UPPER", "KEEP", "IGNORE"], "note": "NATO"}
+{"id": "org_03", "category": "organization", "tokens": ["rêxistina", "pkk", "hate", "qadexe", "kirin", "."], "labels": ["IGNORE", "UPPER", "KEEP", "KEEP", "KEEP", "IGNORE"], "note": "PKK"}
+{"id": "org_04", "category": "organization", "tokens": ["li", "ab", "dixebite", "."], "labels": ["KEEP", "UPPER", "KEEP", "IGNORE"], "note": "AB acronym"}
+{"id": "org_05", "category": "unknown_name", "tokens": ["komela", "hez", "hat", "damezrandin", "."], "labels": ["IGNORE", "UPPER", "KEEP", "KEEP", "IGNORE"], "note": "HEZ rare org"}
+{"id": "common_01", "category": "common_word", "tokens": ["ez", "îro", "çûm", "bajarê", "."], "labels": ["IGNORE", "KEEP", "KEEP", "KEEP", "IGNORE"], "note": "bajarê must stay lower"}
+{"id": "common_02", "category": "common_word", "tokens": ["ew", "got", "ku", "baran", "dibariya", "."], "labels": ["IGNORE", "KEEP", "KEEP", "KEEP", "KEEP", "IGNORE"], "note": "common nouns"}
+{"id": "common_03", "category": "common_word", "tokens": ["li", "malê", "rûnişt", "."], "labels": ["KEEP", "KEEP", "KEEP", "IGNORE"], "note": "malê"}
+{"id": "common_04", "category": "common_word", "tokens": ["ev", "pirtûk", "baş", "e", "."], "labels": ["IGNORE", "KEEP", "KEEP", "KEEP", "IGNORE"], "note": "pirtûk"}
+{"id": "common_05", "category": "common_word", "tokens": ["ew", "heval", "e", "."], "labels": ["IGNORE", "KEEP", "KEEP", "IGNORE"], "note": "heval not a name"}
+{"id": "common_06", "category": "common_word", "tokens": ["li", "gund", "dijîn", "."], "labels": ["KEEP", "KEEP", "KEEP", "IGNORE"], "note": "gund"}
+{"id": "common_07", "category": "common_word", "tokens": ["şerê", "mezin", "qediya", "."], "labels": ["IGNORE", "KEEP", "KEEP", "IGNORE"], "note": "şerê common"}
+{"id": "common_08", "category": "common_word", "tokens": ["komara", "nû", "hat", "ilan", "kirin", "."], "labels": ["IGNORE", "KEEP", "KEEP", "KEEP", "KEEP", "IGNORE"], "note": "komara common"}
+{"id": "common_09", "category": "common_word", "tokens": ["navenda", "bajarî", "ye", "."], "labels": ["IGNORE", "KEEP", "KEEP", "IGNORE"], "note": "navenda"}
+{"id": "common_10", "category": "common_word", "tokens": ["di", "salê", "de", "hat", "."], "labels": ["KEEP", "KEEP", "KEEP", "KEEP", "IGNORE"], "note": "function words"}
+{"id": "mixed_01", "category": "mixed", "tokens": ["azad", "li", "amedê", "ji", "un", "dixebite", "."], "labels": ["IGNORE", "KEEP", "TITLE", "KEEP", "UPPER", "KEEP", "IGNORE"], "note": "name + place + acronym"}
+{"id": "mixed_02", "category": "mixed", "tokens": ["berivan", "çû", "rojava", "."], "labels": ["IGNORE", "KEEP", "TITLE", "IGNORE"], "note": "person + place"}
+{"id": "mixed_03", "category": "mixed", "tokens": ["li", "bajarê", "amedê", "şerê", "mezin", "qediya", "."], "labels": ["KEEP", "KEEP", "TITLE", "KEEP", "KEEP", "KEEP", "IGNORE"], "note": "city vs common şerê"}

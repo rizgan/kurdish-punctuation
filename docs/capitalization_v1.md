@@ -49,6 +49,8 @@ python predict_capitalization.py `
 
 Wikipedia casing can teach headers, link titles, and editorial caps. Always review `label_diagnosis.json` (`frequent_title_tokens`, `sample_TITLE`, `sample_UPPER`) before a full run. Filters already drop single-letter TITLE and non-Latin tokens.
 
+Frozen v1.0 (after long-text gate): `models/capitalization/kurmanji-xlm-r-base-v1/` — see `model_card.md`.
+
 ## Human audit (punctuation v2) — parallel
 
 When the filled CSV is ready:

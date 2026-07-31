@@ -1,0 +1,12 @@
+{
+  "labels": [
+    "KEEP",
+    "TITLE",
+    "UPPER"
+  ],
+  "label2id": {
+    "KEEP": 0,
+    "TITLE": 1,
+    "UPPER": 2
+  }
+}

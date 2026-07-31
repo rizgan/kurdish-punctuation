@@ -1,0 +1,83 @@
+{
+  "n_articles_requested": 400,
+  "n_articles_scored": 400,
+  "n_scored_tokens": 134512,
+  "title_threshold": 0.8,
+  "upper_threshold": 0.9,
+  "case_only_preservation_ok": 400,
+  "case_only_preservation_fail": 0,
+  "sentence_start_accuracy": 0.9965669988925803,
+  "sentence_start_n": 9030,
+  "trainable_input_not_lower": 0,
+  "trainable_input_checked": 134512,
+  "input_casing_ok": true,
+  "gate": {
+    "TITLE_f1": 0.8853217995187476,
+    "TITLE_precision": 0.9155222376212675,
+    "TITLE_recall": 0.8570501857639913,
+    "UPPER_f1": 0.9451073985680191,
+    "KEEP_f1": 0.983977395848824,
+    "macro_f1": 0.9152145990433833,
+    "preservation_rate": 1.0,
+    "pass_TITLE_f1": true,
+    "pass_TITLE_precision": true,
+    "pass_UPPER_f1": true,
+    "pass_KEEP_f1": true,
+    "pass_preservation": true,
+    "v1_freeze_candidate": true
+  },
+  "metrics": {
+    "capitalization_macro_f1": 0.9152145990433833,
+    "capitalization_micro_f1": 0.8868098250616293,
+    "capitalization_micro_precision": 0.9166769004052561,
+    "capitalization_micro_recall": 0.8588275901743082,
+    "weighted_f1": 0.9714174639036389,
+    "accuracy": 0.9718166408944927,
+    "proper_name_f1": 0.8853217995187476,
+    "proper_name_precision": 0.9155222376212675,
+    "proper_name_recall": 0.8570501857639913,
+    "acronym_f1": 0.9451073985680191,
+    "per_label": {
+      "KEEP": {
+        "precision": 0.979412312012586,
+        "recall": 0.9885852350826866,
+        "f1": 0.983977395848824,
+        "support": 117129.0
+      },
+      "TITLE": {
+        "precision": 0.9155222376212675,
+        "recall": 0.8570501857639913,
+        "f1": 0.8853217995187476,
+        "support": 16957.0
+      },
+      "UPPER": {
+        "precision": 0.9611650485436893,
+        "recall": 0.9295774647887324,
+        "f1": 0.9451073985680191,
+        "support": 426.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        115792,
+        1329,
+        8
+      ],
+      [
+        2416,
+        14533,
+        8
+      ],
+      [
+        18,
+        12,
+        396
+      ]
+    ],
+    "labels": [
+      "KEEP",
+      "TITLE",
+      "UPPER"
+    ]
+  }
+}

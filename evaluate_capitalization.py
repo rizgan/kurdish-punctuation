@@ -66,7 +66,10 @@ def main() -> int:
         remove_columns=ds.column_names,
     )
     collator = DataCollatorForTokenClassification(tokenizer=tokenizer)
-    trainer = Trainer(model=model, data_collator=collator, tokenizer=tokenizer)
+    try:
+        trainer = Trainer(model=model, data_collator=collator, processing_class=tokenizer)
+    except TypeError:
+        trainer = Trainer(model=model, data_collator=collator, tokenizer=tokenizer)
     pred = trainer.predict(tok)
     y_true, y_pred = flatten_predictions(pred.predictions, pred.label_ids)
     metrics = compute_capitalization_metrics(y_true, y_pred)

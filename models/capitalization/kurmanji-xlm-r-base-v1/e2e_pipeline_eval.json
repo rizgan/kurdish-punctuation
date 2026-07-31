@@ -1,0 +1,150 @@
+{
+  "n_articles": 200,
+  "title_threshold": 0.8,
+  "upper_threshold": 0.9,
+  "capitalization_on_gold_punctuation": {
+    "capitalization_macro_f1": 0.9236828651956744,
+    "capitalization_micro_f1": 0.8972330165269911,
+    "capitalization_micro_precision": 0.9173767352800383,
+    "capitalization_micro_recall": 0.8779549202858714,
+    "weighted_f1": 0.9739532107617102,
+    "accuracy": 0.9741998770859925,
+    "proper_name_f1": 0.8955972416453681,
+    "proper_name_precision": 0.9160501134457927,
+    "proper_name_recall": 0.8760377358490566,
+    "acronym_f1": 0.9517684887459807,
+    "per_label": {
+      "KEEP": {
+        "precision": 0.982202327180552,
+        "recall": 0.9884528752476323,
+        "f1": 0.9853176884320156,
+        "support": 73698.0
+      },
+      "TITLE": {
+        "precision": 0.9160501134457927,
+        "recall": 0.8760377358490566,
+        "f1": 0.8955972416453681,
+        "support": 10600.0
+      },
+      "UPPER": {
+        "precision": 0.961038961038961,
+        "recall": 0.9426751592356688,
+        "f1": 0.9517684887459807,
+        "support": 314.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        72847,
+        845,
+        6
+      ],
+      [
+        1308,
+        9286,
+        6
+      ],
+      [
+        12,
+        6,
+        296
+      ]
+    ],
+    "labels": [
+      "KEEP",
+      "TITLE",
+      "UPPER"
+    ]
+  },
+  "capitalization_on_predicted_punctuation": {
+    "capitalization_macro_f1": 0.8758846995238707,
+    "capitalization_micro_f1": 0.8076463560334528,
+    "capitalization_micro_precision": 0.9209809264305178,
+    "capitalization_micro_recall": 0.7191489361702128,
+    "weighted_f1": 0.9705638848509637,
+    "accuracy": 0.9721597786615943,
+    "proper_name_f1": 0.8044009779951099,
+    "proper_name_precision": 0.9189944134078212,
+    "proper_name_recall": 0.7152173913043478,
+    "acronym_f1": 0.9473684210526316,
+    "per_label": {
+      "KEEP": {
+        "precision": 0.9756277695716395,
+        "recall": 0.9945416901938641,
+        "f1": 0.9849939416534624,
+        "support": 5313.0
+      },
+      "TITLE": {
+        "precision": 0.9189944134078212,
+        "recall": 0.7152173913043478,
+        "f1": 0.8044009779951099,
+        "support": 460.0
+      },
+      "UPPER": {
+        "precision": 1.0,
+        "recall": 0.9,
+        "f1": 0.9473684210526316,
+        "support": 10.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        5284,
+        29,
+        0
+      ],
+      [
+        131,
+        329,
+        0
+      ],
+      [
+        1,
+        0,
+        9
+      ]
+    ],
+    "labels": [
+      "KEEP",
+      "TITLE",
+      "UPPER"
+    ]
+  },
+  "n_tokens_gold_punct": 84612,
+  "n_tokens_pred_punct": 5783,
+  "case_only_preservation_fail": 0,
+  "examples": [
+    {
+      "article_id": "wiki_000054",
+      "error": "punctuation_restore_failed: TextPreservationError"
+    },
+    {
+      "article_id": "wiki_000075",
+      "error": "punctuation_restore_failed: TextPreservationError"
+    },
+    {
+      "article_id": "wiki_000089",
+      "error": "punctuation_restore_failed: TextPreservationError"
+    },
+    {
+      "article_id": "wiki_000090",
+      "error": "punctuation_restore_failed: TextPreservationError"
+    },
+    {
+      "article_id": "wiki_000143",
+      "error": "punctuation_restore_failed: TextPreservationError"
+    },
+    {
+      "article_id": "wiki_000168",
+      "error": "punctuation_restore_failed: TextPreservationError"
+    },
+    {
+      "article_id": "wiki_000192",
+      "error": "punctuation_restore_failed: TextPreservationError"
+    },
+    {
+      "article_id": "wiki_000206",
+      "error": "punctuation_restore_failed: TextPreservationError"
+    }
+  ]
+}

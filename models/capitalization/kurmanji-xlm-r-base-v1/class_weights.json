@@ -1,0 +1,24 @@
+{
+  "labels": [
+    "KEEP",
+    "TITLE",
+    "UPPER"
+  ],
+  "weights": {
+    "KEEP": 1.0,
+    "TITLE": 2.4534498807820277,
+    "UPPER": 10.0
+  },
+  "weights_list": [
+    1.0,
+    2.4534498807820277,
+    10.0
+  ],
+  "label_counts": {
+    "KEEP": 3733862,
+    "TITLE": 620303,
+    "UPPER": 18747,
+    "IGNORE": 1164813
+  },
+  "method": "inverse_sqrt_normalized_KEEP_equals_1"
+}

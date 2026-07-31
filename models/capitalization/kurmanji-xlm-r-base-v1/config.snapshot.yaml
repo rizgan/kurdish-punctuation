@@ -1,0 +1,66 @@
+dataset:
+  map_ellipsis_to_period: true
+  max_model_length: 256
+  max_train_words: 8000000
+  min_tokens_per_window: 80
+  sample_mode: continuous_token_windows
+  seed: 42
+  target_tokens_max: 180
+  target_tokens_min: 110
+  test_overlap_tokens: 0
+  test_ratio: 0.05
+  train_overlap_tokens: 8
+  train_ratio: 0.9
+  val_overlap_tokens: 0
+  validation_ratio: 0.05
+early_stopping:
+  enabled: true
+  patience: 2
+inference:
+  batch_size: 16
+  max_length: 256
+  minimum_confidence:
+    TITLE: 0.8
+    UPPER: 0.9
+  overlap_words: 32
+loss:
+  class_weight_method: inverse_sqrt
+  max_class_weight: 10.0
+  use_class_weights: true
+model:
+  max_length: 256
+  name: FacebookAI/xlm-roberta-base
+  num_labels: 3
+paths:
+  best_model_dir: models/capitalization/kurmanji-xlm-r-base-v1
+  processed_dir: data/processed_capitalization
+  raw_wikipedia_jsonl: data/raw/wikipedia.jsonl
+project:
+  output_dir: outputs/capitalization-xlm-r-base-v1
+  seed: 42
+sentence_rule:
+  capitalize_after_exclamation: true
+  capitalize_after_period: true
+  capitalize_after_question: true
+  capitalize_first_word: true
+  capitalize_word_after_leading_number: false
+  skip_leading_quotes: true
+training:
+  dataloader_num_workers: 0
+  epochs: 3
+  eval_batch_size: 32
+  evaluation_strategy: epoch
+  gradient_accumulation_steps: 2
+  gradient_checkpointing: false
+  greater_is_better: true
+  learning_rate: 2.0e-05
+  load_best_model_at_end: true
+  logging_steps: 50
+  max_grad_norm: 1.0
+  metric_for_best_model: capitalization_macro_f1
+  precision: bf16
+  save_strategy: epoch
+  save_total_limit: 3
+  train_batch_size: 16
+  warmup_ratio: 0.06
+  weight_decay: 0.01

@@ -1,0 +1,276 @@
+{
+  "n_cases": 28,
+  "n_scored_tokens": 88,
+  "title_threshold": 0.9,
+  "upper_threshold": 0.9,
+  "metrics": {
+    "capitalization_macro_f1": 0.5238095238095238,
+    "capitalization_micro_f1": 0.6428571428571429,
+    "capitalization_micro_precision": 1.0,
+    "capitalization_micro_recall": 0.47368421052631576,
+    "weighted_f1": 0.8631464256464255,
+    "accuracy": 0.8863636363636364,
+    "proper_name_f1": 0.761904761904762,
+    "proper_name_precision": 1.0,
+    "proper_name_recall": 0.6153846153846154,
+    "acronym_f1": 0.2857142857142857,
+    "per_label": {
+      "KEEP": {
+        "precision": 0.8734177215189873,
+        "recall": 1.0,
+        "f1": 0.9324324324324325,
+        "support": 69.0
+      },
+      "TITLE": {
+        "precision": 1.0,
+        "recall": 0.6153846153846154,
+        "f1": 0.761904761904762,
+        "support": 13.0
+      },
+      "UPPER": {
+        "precision": 1.0,
+        "recall": 0.16666666666666666,
+        "f1": 0.2857142857142857,
+        "support": 6.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        69,
+        0,
+        0
+      ],
+      [
+        5,
+        8,
+        0
+      ],
+      [
+        5,
+        0,
+        1
+      ]
+    ],
+    "labels": [
+      "KEEP",
+      "TITLE",
+      "UPPER"
+    ]
+  },
+  "per_category": {
+    "person": {
+      "KEEP": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 2.0
+      },
+      "TITLE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 1.0
+      },
+      "UPPER": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0.0
+      }
+    },
+    "unknown_name": {
+      "KEEP": {
+        "precision": 0.7777777777777778,
+        "recall": 1.0,
+        "f1": 0.8750000000000001,
+        "support": 14.0
+      },
+      "TITLE": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "support": 6.0
+      },
+      "UPPER": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 1.0
+      }
+    },
+    "place": {
+      "KEEP": {
+        "precision": 0.8571428571428571,
+        "recall": 1.0,
+        "f1": 0.923076923076923,
+        "support": 6.0
+      },
+      "TITLE": {
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1": 0.8,
+        "support": 3.0
+      },
+      "UPPER": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0.0
+      }
+    },
+    "organization": {
+      "KEEP": {
+        "precision": 0.7272727272727273,
+        "recall": 1.0,
+        "f1": 0.8421052631578948,
+        "support": 8.0
+      },
+      "TITLE": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0.0
+      },
+      "UPPER": {
+        "precision": 1.0,
+        "recall": 0.25,
+        "f1": 0.4,
+        "support": 4.0
+      }
+    },
+    "common_word": {
+      "KEEP": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 30.0
+      },
+      "TITLE": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0.0
+      },
+      "UPPER": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0.0
+      }
+    },
+    "mixed": {
+      "KEEP": {
+        "precision": 0.8181818181818182,
+        "recall": 1.0,
+        "f1": 0.9,
+        "support": 9.0
+      },
+      "TITLE": {
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1": 0.8,
+        "support": 3.0
+      },
+      "UPPER": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 1.0
+      }
+    }
+  },
+  "common_word_KEEP_to_TITLE_fp": 0,
+  "common_word_n": 30,
+  "errors": [
+    {
+      "id": "person_02",
+      "category": "unknown_name",
+      "token": "dilşad",
+      "gold": "TITLE",
+      "pred": "KEEP",
+      "confidence": 0.10382961481809616,
+      "note": "rare personal name Dilşad"
+    },
+    {
+      "id": "person_04",
+      "category": "unknown_name",
+      "token": "ciwan",
+      "gold": "TITLE",
+      "pred": "KEEP",
+      "confidence": 0.724750816822052,
+      "note": "Ciwan as name"
+    },
+    {
+      "id": "person_05",
+      "category": "unknown_name",
+      "token": "ruken",
+      "gold": "TITLE",
+      "pred": "KEEP",
+      "confidence": 0.9125193357467651,
+      "note": "Ruken"
+    },
+    {
+      "id": "place_02",
+      "category": "place",
+      "token": "rojava",
+      "gold": "TITLE",
+      "pred": "KEEP",
+      "confidence": 0.2880931496620178,
+      "note": "Rojava region"
+    },
+    {
+      "id": "org_01",
+      "category": "organization",
+      "token": "un",
+      "gold": "UPPER",
+      "pred": "KEEP",
+      "confidence": 0.600009560585022,
+      "note": "UN acronym"
+    },
+    {
+      "id": "org_02",
+      "category": "organization",
+      "token": "nato",
+      "gold": "UPPER",
+      "pred": "KEEP",
+      "confidence": 0.30510303378105164,
+      "note": "NATO"
+    },
+    {
+      "id": "org_04",
+      "category": "organization",
+      "token": "ab",
+      "gold": "UPPER",
+      "pred": "KEEP",
+      "confidence": 0.996319055557251,
+      "note": "AB acronym"
+    },
+    {
+      "id": "org_05",
+      "category": "unknown_name",
+      "token": "hez",
+      "gold": "UPPER",
+      "pred": "KEEP",
+      "confidence": 0.7938178181648254,
+      "note": "HEZ rare org"
+    },
+    {
+      "id": "mixed_01",
+      "category": "mixed",
+      "token": "un",
+      "gold": "UPPER",
+      "pred": "KEEP",
+      "confidence": 0.28706812858581543,
+      "note": "name + place + acronym"
+    },
+    {
+      "id": "mixed_02",
+      "category": "mixed",
+      "token": "rojava",
+      "gold": "TITLE",
+      "pred": "KEEP",
+      "confidence": 0.4672437608242035,
+      "note": "person + place"
+    }
+  ]
+}
