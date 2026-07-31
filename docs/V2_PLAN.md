@@ -64,12 +64,26 @@ Do **not**:
 
 | Metric | Requirement vs v1.0 |
 |--------|---------------------|
-| QUESTION F1 | **increases** (primary goal) |
+| QUESTION F1 | **> 0.62** (must increase) |
+| QUESTION precision | **> 0.56** (preferred lever — v1 over-fires `?`) |
+| QUESTION recall | **≥ 0.67** (may rise moderately; must not collapse) |
+| `O→QUESTION` | must not grow **disproportionately** vs train Q support / F1 gain |
 | PERIOD F1 | drop ≤ **0.02** (v1 ≈ 0.93 → ≥ 0.91) |
 | COMMA F1 | drop ≤ **0.02** (v1 ≈ 0.66 → ≥ 0.64) |
 | sentence_boundary F1 | drop ≤ **0.02** (v1 ≈ 0.93 → ≥ 0.91) |
 | text_preservation | **1.0** |
 | Macro F1 | should not collapse; prefer ≥ v1 − 0.02 |
+
+### v1 QUESTION baseline reading
+
+```text
+precision 0.56  <  recall 0.69
+Q→O = 9          # main miss type
+O→QUESTION = 6   # false alarms (hurts precision)
+Q→PERIOD = 1     # almost no confusion with PERIOD
+```
+
+v1 tends to **over-predict** question boundaries relative to precision. Best v2 outcome: **precision up**, recall held (≥ 0.67) or slightly up — not recall-only via aggressive oversampling.
 
 Also log for each run (see [`v2_experiments.md`](v2_experiments.md)):
 

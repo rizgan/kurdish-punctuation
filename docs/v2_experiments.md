@@ -1,7 +1,19 @@
 # v2 experiment log
 
-Primary long-text protocol: **400 held-out articles** (`evaluate_long_text.py`, article mode).  
-Gate: QUESTION F1 ↑ vs v1; PERIOD / COMMA / Boundary drop ≤ 0.02; preservation = 1.0.
+Primary long-text protocol: **400 held-out articles** (`evaluate_long_text.py`, article mode).
+
+**Overall gate:** QUESTION F1 ↑; PERIOD / COMMA / Boundary drop ≤ 0.02; preservation = 1.0.
+
+**QUESTION practical gate (v1 reading: P 0.56 < R 0.69 → over-fires `?`):**
+
+```text
+F1 > 0.62
+precision > 0.56
+recall ≥ 0.67
+O→QUESTION does not grow disproportionately
+```
+
+Watch especially on **v2-exp-02**: weight 2.0–3.0 may lift recall while inflating `O→QUESTION`.
 
 ## Summary (gate metrics)
 
@@ -21,9 +33,10 @@ Gate: QUESTION F1 ↑ vs v1; PERIOD / COMMA / Boundary drop ≤ 0.02; preservati
 
 How to read:
 
-* **Q→PERIOD / Q→O** — missed or weakened questions (hurts recall).
-* **O→QUESTION** — false alarms (hurts precision).
-* If P high & R low → need more / more diverse questions (or lower Q threshold later).
-* If R high & P low → need harder negatives (assertions near questions), not more oversampling.
+* **Q→PERIOD / Q→O** — missed or weakened questions (hurts recall). v1: Q→O dominates (9), Q→PERIOD rare (1).
+* **O→QUESTION** — false alarms (hurts precision). v1: 6 — already material vs P=0.56.
+* Prefer **precision↑ with recall≥0.67** over recall-only gains from oversampling.
+* If P high & R low → more / more diverse in-context questions.
+* If R high & P low → harder negatives near questions; do **not** raise sampling weight further.
 
 Machine-readable: [`v2_experiments.csv`](v2_experiments.csv).
