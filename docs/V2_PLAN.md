@@ -71,14 +71,14 @@ Do **not**:
 | text_preservation | **1.0** |
 | Macro F1 | should not collapse; prefer ≥ v1 − 0.02 |
 
-Also log for QUESTION:
+Also log for each run (see [`v2_experiments.md`](v2_experiments.md)):
 
 ```text
-precision, recall, F1, support
+QUESTION precision / recall / F1
 QUESTION → PERIOD
 QUESTION → O
 O → QUESTION
-PERIOD → QUESTION
+train QUESTION label support
 ```
 
 Optional extra: dedicated question-test (500–1000 in-context items, held out from train).

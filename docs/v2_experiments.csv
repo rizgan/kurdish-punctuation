@@ -1,4 +1,4 @@
-run,question_corpus_note,sampling_weight,question_f1,period_f1,comma_f1,boundary_f1,preservation,gate,notes
-v1-baseline,wiki only (~907 QUESTION labels),1.0,0.62,0.93,0.66,0.93,1.0,baseline,kurmanji-punctuation-xlm-r-base-v1.0 long-text 400 articles
-v2-exp-01,real questions inside multi-sentence context; no sampling change,1.0,,,,,,"isolates corpus effect"
-v2-exp-02,same corpus as v2-exp-01,2.5,,,,,,"moderate question-window weight 2.0-3.0; isolates oversampling"
+run,question_corpus_note,sampling_weight,train_question_support,question_precision,question_recall,question_f1,period_f1,comma_f1,boundary_f1,preservation,q_to_period,q_to_o,o_to_question,gate,notes
+v1-baseline,wiki only,1.0,907,0.56,0.69,0.62,0.93,0.66,0.93,1.0,1,9,6,baseline,"long-text 400 articles; gold Q support=32"
+v2-exp-01,real questions inside multi-sentence context; no sampling change,1.0,,,,,,,,,,"isolates corpus effect"
+v2-exp-02,same corpus as v2-exp-01,2.5,,,,,,,,,,"moderate question-window weight 2.0-3.0; isolates oversampling"
