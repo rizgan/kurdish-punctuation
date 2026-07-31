@@ -9,6 +9,33 @@ ez îro çûm bajarê lê baran dibariya
 → ez îro çûm bajarê, lê baran dibariya.
 ```
 
+## Results — v1.0 (`kurmanji-punctuation-xlm-r-base-v1.0`)
+
+Frozen path: [`models/punctuation/kurmanji-xlm-r-base-v1`](models/punctuation/kurmanji-xlm-r-base-v1) · details in [`model_card.md`](models/punctuation/kurmanji-xlm-r-base-v1/model_card.md)
+
+**Primary metric:** honest long-text (400 held-out Wikipedia articles → strip `, . ? !` → windowed restore). Sentence-level F1 is *not* the headline score (it can leak “end of sequence ⇒ PERIOD”).
+
+| Metric | Long-text (400 articles) |
+|--------|-------------------------:|
+| PERIOD F1 | **0.93** |
+| PERIOD recall | **0.95** |
+| COMMA F1 | **0.66** |
+| QUESTION F1 | **0.62** |
+| EXCLAMATION F1 | **0.75** |
+| Sentence-boundary F1 | **0.93** |
+| Macro F1 (excl. `O`) | **0.74** |
+| Text preservation | **1.0** |
+
+Training setup that made this honest:
+
+| | |
+|--|--:|
+| Training unit | continuous word windows (~110–180 words) |
+| Train samples | 40 714 |
+| PERIOD @ last word of window | **4.6%** (was ~100% with sentence-split) |
+
+Earlier sentence-split model on the same long-text protocol: PERIOD F1 ≈ **0.30**, recall ≈ **0.18**.
+
 > Legacy FullStop fine-tune scripts live under `scripts/` + `src/kurdish_punctuation/` and `data/processed_fullstop/`. The active pipeline is this XLM-R project.
 
 ## Project layout
@@ -101,23 +128,17 @@ Train examples are **continuous word windows** (not single sentences). Check `da
 
 ```powershell
 python evaluate.py `
-  --model outputs/punctuation-xlm-r-base/best `
+  --model models/punctuation/kurmanji-xlm-r-base-v1 `
   --data data/processed/test.jsonl `
   --config config.yaml
+
+python evaluate_long_text.py `
+  --model models/punctuation/kurmanji-xlm-r-base-v1 `
+  --max-articles 400 `
+  --tag v1_check
 ```
 
-Primary metric on **sentence-level** test: **`punctuation_macro_f1`**.
-
-### Honest long-text check (important)
-
-Sentence-level PERIOD F1 can be inflated if each training/eval example is one sentence (the model learns “end of sequence ≈ PERIOD”). Re-check on whole articles:
-
-```powershell
-python evaluate_long_text.py --model outputs/punctuation-xlm-r-base/best --max-articles 400
-python tune_thresholds.py --model outputs/punctuation-xlm-r-base/best --max-samples 5000
-```
-
-Reports: `outputs/punctuation-xlm-r-base/long_text_eval.json`, `threshold_tuning.json`.
+Use **long-text** `punctuation_macro_f1` / `sentence_boundary_f1` for model selection. Window/sentence eval is secondary.
 
 ## Predict
 
